@@ -24,7 +24,7 @@
     http://www.soundcloud.com/empyreanma
 ]]
 
-require 'src/Dependencies'
+require 'src/Dependencies' --test
 
 --[[
     Called just once at the beginning of the game; used to set up
