@@ -10,6 +10,7 @@ function PowerUp:init()
     self.width = 16
     self.height = 16
     self.inPlay = false
+    self.x = 0
     self.y = 0
 
 end
@@ -29,13 +30,20 @@ end
 
 
 function PowerUp:collides(target)
-    -- x checking not necessary 
+
+    if self.x > target.x + target.width or target.x > self.x + self.width then
+        return false
+    end
+
+    -- then check to see if the bottom edge of either is higher than the top
+    -- edge of the other
     if self.y > target.y + target.height or target.y > self.y + self.height then
         return false
     end 
 
     -- if the above aren't true, they're overlapping
     return true
+
 end
 
 function PowerUp:activate(x,y)

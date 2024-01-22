@@ -234,6 +234,7 @@ function PlayState:update(dt)
             end
 
 
+
             -- only allow colliding with one brick, for corners
             break
 
@@ -391,10 +392,18 @@ function PlayState:update(dt)
                     break
         
                 end
+                
 
+                --implement this better but this works for now
+                if brickHit >0 and brickHit % 5 == 0 then
+                    brickHit = brickHit + 1
+                    self.paddle:sizeChange(1)
+                end
 
 
     end
+
+    
 
     if self.ball.y >= VIRTUAL_HEIGHT then
         ballCount = ballCount - 1
@@ -425,6 +434,8 @@ function PlayState:update(dt)
     if ballCount <1 then
         self.health = self.health - 1
         gSounds['hurt']:play()
+        
+        self.paddle:sizeChange(-1)
 
         if self.health == 0 then
             gStateMachine:change('game-over', {

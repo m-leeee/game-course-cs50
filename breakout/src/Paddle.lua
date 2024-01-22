@@ -67,6 +67,29 @@ function Paddle:update(dt)
     end
 end
 
+
+function Paddle:sizeChange(change)
+
+    local newsize = self.size + change 
+    if newsize > 0 and newsize < 5 then
+        self.size = newsize 
+    end
+    if self.size == 1 then
+        self.width = 32
+        self.height = 16
+    elseif self.size == 2 then
+        self.width = 64
+        self.height = 16
+    elseif self.size == 3 then
+        self.width = 96
+        self.height = 16
+    elseif self.size == 4 then
+        self.width = 128
+        self.height = 16
+    end
+        
+end
+
 --[[
     Render the paddle by drawing the main texture, passing in the quad
     that corresponds to the proper skin and size.
