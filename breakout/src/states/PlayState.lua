@@ -50,14 +50,16 @@ function PlayState:enter(params)
     self.ballA.y = 0
     self.ballB = Ball()
     self.ballA.skin = math.random(7)
-    --self.ballB.skin = math.random(7)
+
     --self.ballB.x = 0
     --self.ballB.y = 10
 
 
     self.ball.isActive = true
     self.ballA.isActive = false
-    
+    self.ballB:reset()
+    self.ballB.skin = math.random(7)
+    self.ballB.isActive = false
 end
 
 function PlayState:update(dt)
@@ -84,6 +86,10 @@ function PlayState:update(dt)
 
     if ballUp == true and self.ballA.isActive == true then
         self.ballA:update(dt)
+    end
+
+    if ballUp == true and self.ballB.isActive == true then
+        self.ballB:update(dt)
     end
     --self.ballB:update(dt)
 
@@ -131,21 +137,47 @@ function PlayState:update(dt)
     end
 
 
+    if self.ballB:collides(self.paddle) then
+        -- raise ball above paddle in case it goes below it, then reverse dy
+        self.ballB.y = self.paddle.y - 8
+        self.ballB.dy = -self.ballB.dy
+
+        --
+        -- tweak angle of bounce based on where it hits the paddle
+        --
+
+        -- if we hit the paddle on its left side while moving left...
+        if self.ballB.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
+            self.ballB.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - self.ballB.x))
+        
+        -- else if we hit the paddle on its right side while moving right...
+        elseif self.ballB.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
+            self.ballB.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ballB.x))
+        end
+
+        gSounds['paddle-hit']:play()
+    end
+
+
     if self.powerUp:collides(self.paddle) then
         --spawn a new ball
         self.powerUp.inPlay = false
         ballUp = true
         self.ballA.isActive = true 
+        self.ballB.isActive = true
         --ballAActive = true
-        ballCount = 2
+        ballCount = 3
         
         self.ballA.x = self.paddle.x + (self.paddle.width / 2) - 4
         self.ballA.y = self.paddle.y - 8
         self.ballA.dx = math.random(-200, 200)
         self.ballA.dy = math.random(-50, -60)
 
+        self.ballB.x = self.paddle.x + (self.paddle.width / 2) - 4
+        self.ballB.y = self.paddle.y - 8
         self.ballB.dx = math.random(-200, 200)
         self.ballB.dy = math.random(-50, -60) 
+
         self.powerUp.x = 0
         self.powerUp.y = 0
         self.powerUp.dx = 0
@@ -196,7 +228,7 @@ function PlayState:update(dt)
 
             self.ball:collisionUpdate(brick)
 
-            if brickHit == 2 then
+            if brickHit == 3 then
                 --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
                 self.powerUp:activate(brick.x,brick.y)
             end
@@ -311,7 +343,54 @@ function PlayState:update(dt)
                 end
 
 
+                
+                -- only check collision if we're in play
+                if brick.inPlay and self.ballB:collides(brick) then
 
+                    -- add to score
+                    self.score = self.score + (brick.tier * 200 + brick.color * 25)
+                    brickHit = brickHit + 1
+        
+                    -- trigger the brick's hit function, which removes it from play
+                    brick:hit()
+        
+                    -- if we have enough points, recover a point of health
+                    if self.score > self.recoverPoints then
+                        -- can't go above 3 health
+                        self.health = math.min(3, self.health + 1)
+        
+                        -- multiply recover points by 2
+                        self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
+        
+                        -- play recover sound effect
+                        gSounds['recover']:play()
+                    end
+        
+                    -- go to our victory screen if there are no more bricks left
+                    if self:checkVictory() then
+                        gSounds['victory']:play()
+        
+                        gStateMachine:change('victory', {
+                            level = self.level,
+                            paddle = self.paddle,
+                            health = self.health,
+                            score = self.score,
+                            highScores = self.highScores,
+                            ball = self.ball,
+                            recoverPoints = self.recoverPoints
+                        })
+                    end
+                    
+        
+        
+                    self.ballB:collisionUpdate(brick)
+        
+        
+        
+                    -- only allow colliding with one brick, for corners
+                    break
+        
+                end
 
 
 
@@ -333,6 +412,15 @@ function PlayState:update(dt)
         self.ballA.isActive = false
         --ballAActive = false
     end
+    if self.ballB.y >= VIRTUAL_HEIGHT then
+        ballCount = ballCount - 1
+        self.ballB.y = 0
+        self.ballB.dx = 0
+        self.ballB.dy = 0
+        self.ballB.isActive = false
+        --ballActive = false
+    end
+
     -- if ball goes below bounds, revert to serve state and decrease health
     if ballCount <1 then
         self.health = self.health - 1
@@ -392,6 +480,10 @@ function PlayState:render()
     if ballUp == true and self.ballA.isActive == true then
         self.ballA:render()
     end
+
+    if ballUp == true and self.ballB.isActive == true then
+        self.ballB:render()
+    end
     --self.ballB.render()
     --love.graphics.draw(gTextures['main'], gFrames['balls'][self.ballB.skin],self.ballB.x, self.ballB.y)
 
@@ -404,8 +496,8 @@ function PlayState:render()
         love.graphics.printf("PAUSED", 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
     end
 
-    love.graphics.printf(ballCount, 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
-
+    --love.graphics.printf(ballCount, 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
+    --debug purposes
 
 end
 
