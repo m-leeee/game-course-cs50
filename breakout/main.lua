@@ -24,7 +24,7 @@
     http://www.soundcloud.com/empyreanma
 ]]
 
-require 'src/Dependencies' --test
+require 'src/Dependencies' 
 
 --[[
     Called just once at the beginning of the game; used to set up
@@ -66,7 +66,8 @@ function love.load()
         ['paddles'] = GenerateQuadsPaddles(gTextures['main']),
         ['balls'] = GenerateQuadsBalls(gTextures['main']),
         ['bricks'] = GenerateQuadsBricks(gTextures['main']),
-        ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9)
+        ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9),
+        ['powerups'] = GenerateQuadsPowerUp(gTextures['main'])
     }
     
     -- initialize our virtual resolution, which will be rendered within our
