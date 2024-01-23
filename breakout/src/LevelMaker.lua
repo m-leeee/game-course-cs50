@@ -47,6 +47,8 @@ function LevelMaker.createMap(level)
     -- highest color of the highest tier, no higher than 5
     local highestColor = math.min(5, level % 5 + 3)
 
+    local lockedGenned = false
+
     -- lay out bricks such that they touch each other and fill the space
     for y = 1, numRows do
         -- whether we want to enable skipping for this row
@@ -112,6 +114,16 @@ function LevelMaker.createMap(level)
                 b.tier = solidTier
             end 
 
+
+            if math.random(10) < 2 then
+                if lockedGenned ==false then
+                    b.isLocked = true
+                    lockedGenned = true 
+                    b.tier = 0
+                    b.color = 1
+                end
+            end
+
             table.insert(bricks, b)
 
             -- Lua's version of the 'continue' statement
@@ -126,3 +138,4 @@ function LevelMaker.createMap(level)
         return bricks
     end
 end
+

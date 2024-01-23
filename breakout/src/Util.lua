@@ -58,6 +58,13 @@ function GenerateQuadsBricks(atlas)
     return table.slice(GenerateQuads(atlas, 32, 16), 1, 21)
 end
 
+function GenerateLockedBrick(atlas)
+    --local quad = {}
+    --quad[1] = love.graphics.newQuad(x, y + 16, 128, 16,atlas:getDimensions())
+    --return quad
+    return love.graphics.newQuad(160, 48, 32, 16, atlas:getDimensions())
+end
+
 --[[
     This function is specifically made to piece out the paddles from the
     sprite sheet. For this, we have to piece out the paddles a little more

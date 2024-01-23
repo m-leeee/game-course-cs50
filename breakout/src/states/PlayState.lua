@@ -31,15 +31,19 @@ function PlayState:enter(params)
 
     self.recoverPoints = 5000
     self.powerUp = PowerUp()
+    self.key =PowerUp()
+    self.key.type = 10
 
     -- give ball random starting velocity
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
     
-    self.brickHit = 0
+    self.powerCount = 0
+    self.keyCount = 0
     self.ballUp = false
     self.ballCount = 1
     self.sizeupcount = 1
+    self.keyObtained = false
 
 
     --ballActive = true 
@@ -61,6 +65,8 @@ function PlayState:enter(params)
     --self.ballB:reset()
     self.ballB.skin = math.random(7)
     self.ballB.isActive = false
+
+    self.hasLock = false
 end
 
 function PlayState:update(dt)
@@ -84,6 +90,7 @@ function PlayState:update(dt)
         self.ball:update(dt)
     end
     self.powerUp:update(dt)
+    self.key:update(dt)
 
     if self.ballUp == true and self.ballA.isActive == true then
         self.ballA:update(dt)
@@ -185,226 +192,285 @@ function PlayState:update(dt)
 
     end
 
+    if self.key:collides(self.paddle) then
+        --spawn a new ball
+        self.key.inPlay = false
+        self.keyObtained = true
+
+
+        self.key.x = 0
+        self.key.y = 0
+        self.key.dx = 0
+
+    end
     -- detect collision across all bricks with the ball
     for k, brick in pairs(self.bricks) do
-
-        -- only check collision if we're in play
-        if brick.inPlay and self.ball:collides(brick) then
-
-            -- add to score
-            self.score = self.score + (brick.tier * 200 + brick.color * 25)
-            self.brickHit = self.brickHit + 1
-            self.sizeupcount = self.sizeupcount +1
-
-            -- trigger the brick's hit function, which removes it from play
-            brick:hit()
-
-            -- if we have enough points, recover a point of health
-            if self.score > self.recoverPoints then
-                -- can't go above 3 health
-                self.health = math.min(3, self.health + 1)
-
-                -- multiply recover points by 2
-                self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
-
-                -- play recover sound effect
-                gSounds['recover']:play()
-            end
-
-            -- go to our victory screen if there are no more bricks left
-            if self:checkVictory() then
-                gSounds['victory']:play()
-
-                gStateMachine:change('victory', {
-                    level = self.level,
-                    paddle = self.paddle,
-                    health = self.health,
-                    score = self.score,
-                    highScores = self.highScores,
-                    ball = self.ball,
-                    recoverPoints = self.recoverPoints
-                })
-            end
-            
-
-
-            self.ball:collisionUpdate(brick)
-
-            if self.brickHit == 3 then
-                --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
-                self.powerUp:activate(brick.x,brick.y)
-            end
-
-
-
-            -- only allow colliding with one brick, for corners
-            break
-
+        if brick.isLocked then
+            self.hasLock = true
         end
+        if brick.isLocked == false or self.keyObtained == true then
+            -- only check collision if we're in play
+            if brick.inPlay and self.ball:collides(brick) then
 
-                -- only check collision if we're in play
-        if brick.inPlay and self.ball:collides(brick) then
+                -- add to score
+                self.score = self.score + (brick.tier * 200 + brick.color * 25)
+                self.powerCount = self.powerCount + 1
+                self.keyCount = self.keyCount + 1
+                self.sizeupcount = self.sizeupcount +1
 
-            -- add to score
-            self.score = self.score + (brick.tier * 200 + brick.color * 25)
-            self.brickHit = self.brickHit + 1
-            self.sizeupcount = self.sizeupcount +1
+                -- trigger the brick's hit function, which removes it from play
+                brick:hit()
 
-            -- trigger the brick's hit function, which removes it from play
-            brick:hit()
+                -- if we have enough points, recover a point of health
+                if self.score > self.recoverPoints then
+                    -- can't go above 3 health
+                    self.health = math.min(3, self.health + 1)
 
-            -- if we have enough points, recover a point of health
-            if self.score > self.recoverPoints then
-                -- can't go above 3 health
-                self.health = math.min(3, self.health + 1)
+                    -- multiply recover points by 2
+                    self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
 
-                -- multiply recover points by 2
-                self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
-
-                -- play recover sound effect
-                gSounds['recover']:play()
-            end
-
-            -- go to our victory screen if there are no more bricks left
-            if self:checkVictory() then
-                gSounds['victory']:play()
-
-                gStateMachine:change('victory', {
-                    level = self.level,
-                    paddle = self.paddle,
-                    health = self.health,
-                    score = self.score,
-                    highScores = self.highScores,
-                    ball = self.ball,
-                    recoverPoints = self.recoverPoints
-                })
-            end
-            
-
-
-            self.ball:collisionUpdate(brick)
-
-            if self.brickHit == 2 then
-                --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
-                self.powerUp:activate(brick.x,brick.y)
-            end
-
-
-            -- only allow colliding with one brick, for corners
-            break
-
-        end
-
-        
-
-
-                -- only check collision if we're in play
-                if brick.inPlay and self.ballA:collides(brick) then
-
-                    -- add to score
-                    self.score = self.score + (brick.tier * 200 + brick.color * 25)
-                    self.brickHit = self.brickHit + 1
-                    self.sizeupcount = self.sizeupcount +1
-
-                    -- trigger the brick's hit function, which removes it from play
-                    brick:hit()
-        
-                    -- if we have enough points, recover a point of health
-                    if self.score > self.recoverPoints then
-                        -- can't go above 3 health
-                        self.health = math.min(3, self.health + 1)
-        
-                        -- multiply recover points by 2
-                        self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
-        
-                        -- play recover sound effect
-                        gSounds['recover']:play()
-                    end
-        
-                    -- go to our victory screen if there are no more bricks left
-                    if self:checkVictory() then
-                        gSounds['victory']:play()
-        
-                        gStateMachine:change('victory', {
-                            level = self.level,
-                            paddle = self.paddle,
-                            health = self.health,
-                            score = self.score,
-                            highScores = self.highScores,
-                            ball = self.ball,
-                            recoverPoints = self.recoverPoints
-                        })
-                    end
-                    
-        
-        
-                    self.ballA:collisionUpdate(brick)
-        
-        
-        
-                    -- only allow colliding with one brick, for corners
-                    break
-        
+                    -- play recover sound effect
+                    gSounds['recover']:play()
                 end
 
+                -- go to our victory screen if there are no more bricks left
+                if self:checkVictory() then
+                    gSounds['victory']:play()
 
-                
-                -- only check collision if we're in play
-                if brick.inPlay and self.ballB:collides(brick) then
-
-                    -- add to score
-                    self.score = self.score + (brick.tier * 200 + brick.color * 25)
-                    self.brickHit = self.brickHit + 1
-        
-                    -- trigger the brick's hit function, which removes it from play
-                    brick:hit()
-        
-                    -- if we have enough points, recover a point of health
-                    if self.score > self.recoverPoints then
-                        -- can't go above 3 health
-                        self.health = math.min(3, self.health + 1)
-        
-                        -- multiply recover points by 2
-                        self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
-        
-                        -- play recover sound effect
-                        gSounds['recover']:play()
-                    end
-        
-                    -- go to our victory screen if there are no more bricks left
-                    if self:checkVictory() then
-                        gSounds['victory']:play()
-        
-                        gStateMachine:change('victory', {
-                            level = self.level,
-                            paddle = self.paddle,
-                            health = self.health,
-                            score = self.score,
-                            highScores = self.highScores,
-                            ball = self.ball,
-                            recoverPoints = self.recoverPoints
-                        })
-                    end
-                    
-        
-        
-                    self.ballB:collisionUpdate(brick)
-        
-        
-        
-                    -- only allow colliding with one brick, for corners
-                    break
-        
+                    gStateMachine:change('victory', {
+                        level = self.level,
+                        paddle = self.paddle,
+                        health = self.health,
+                        score = self.score,
+                        highScores = self.highScores,
+                        ball = self.ball,
+                        recoverPoints = self.recoverPoints
+                    })
                 end
                 
 
-                --implement this better but this works for now
-                if self.sizeupcount % 5 == 0 then
-                    self.sizeupcount = self.sizeupcount + 1
-                    self.paddle:sizeChange(1)
+
+                self.ball:collisionUpdate(brick)
+
+                if self.powerCount==3 then
+                    --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
+                    self.powerUp:activate(brick.x,brick.y)
                 end
 
+                if self.keyCount%4 == 0 and self.key.inPlay == false and self.keyObtained == false then
+                    if self.hasLock == true then
+                        self.key:activate(brick.x,brick.y)
+                    end
+                end
 
+                -- only allow colliding with one brick, for corners
+                break
+
+            end
+
+
+
+            
+
+
+            -- only check collision if we're in play
+            if brick.inPlay and self.ballA:collides(brick) then
+
+                -- add to score
+                self.score = self.score + (brick.tier * 200 + brick.color * 25)
+                self.powerCount = self.powerCount + 1
+                self.keyCount = self.keyCount + 1
+                self.sizeupcount = self.sizeupcount +1
+
+                -- trigger the brick's hit function, which removes it from play
+                brick:hit()
+    
+                -- if we have enough points, recover a point of health
+                if self.score > self.recoverPoints then
+                    -- can't go above 3 health
+                    self.health = math.min(3, self.health + 1)
+    
+                    -- multiply recover points by 2
+                    self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
+    
+                    -- play recover sound effect
+                    gSounds['recover']:play()
+                end
+    
+                -- go to our victory screen if there are no more bricks left
+                if self:checkVictory() then
+                    gSounds['victory']:play()
+    
+                    gStateMachine:change('victory', {
+                        level = self.level,
+                        paddle = self.paddle,
+                        health = self.health,
+                        score = self.score,
+                        highScores = self.highScores,
+                        ball = self.ball,
+                        recoverPoints = self.recoverPoints
+                    })
+                end
+                
+    
+    
+                self.ballA:collisionUpdate(brick)
+    
+                if self.powerCount==3 then
+                    --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
+                    self.powerUp:activate(brick.x,brick.y)
+                end
+
+                if self.keyCount%4 == 0 and self.key.inPlay == false and self.keyObtained == false then
+                    if self.hasLock == true then
+                        self.key:activate(brick.x,brick.y)
+                    end
+                end
+    
+                -- only allow colliding with one brick, for corners
+                break
+    
+            end
+
+
+            
+            -- only check collision if we're in play
+            if brick.inPlay and self.ballB:collides(brick) then
+
+                -- add to score
+                self.score = self.score + (brick.tier * 200 + brick.color * 25)
+                self.powerCount = self.powerCount + 1
+                self.keyCount = self.keyCount + 1
+    
+                -- trigger the brick's hit function, which removes it from play
+                brick:hit()
+    
+                -- if we have enough points, recover a point of health
+                if self.score > self.recoverPoints then
+                    -- can't go above 3 health
+                    self.health = math.min(3, self.health + 1)
+    
+                    -- multiply recover points by 2
+                    self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
+    
+                    -- play recover sound effect
+                    gSounds['recover']:play()
+                end
+    
+                -- go to our victory screen if there are no more bricks left
+                if self:checkVictory() then
+                    gSounds['victory']:play()
+    
+                    gStateMachine:change('victory', {
+                        level = self.level,
+                        paddle = self.paddle,
+                        health = self.health,
+                        score = self.score,
+                        highScores = self.highScores,
+                        ball = self.ball,
+                        recoverPoints = self.recoverPoints
+                    })
+                end
+                
+    
+    
+                self.ballB:collisionUpdate(brick)
+    
+                if self.powerCount==3 then
+                    --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
+                    self.powerUp:activate(brick.x,brick.y)
+                end
+
+                if self.keyCount%4 == 0 and self.key.inPlay == false and self.keyObtained == false then
+                    if self.hasLock == true then
+                        self.key:activate(brick.x,brick.y)
+                    end
+                end
+    
+                -- only allow colliding with one brick, for corners
+                break
+    
+            end
+            
+
+            --implement this better but this works for now
+            if self.sizeupcount % 5 == 0 then
+                self.sizeupcount = self.sizeupcount + 1
+                self.paddle:sizeChange(1)
+            end
+        
+        else 
+            
+            -- only check collision if we're in play
+            if brick.inPlay and self.ball:collides(brick) then
+
+                -- add to score
+                self.keyCount = self.keyCount + 1
+
+
+
+                self.ball:collisionUpdate(brick)
+
+
+                if self.keyCount%4 ==0 and self.key.inPlay == false and self.keyObtained == false then
+                    if self.hasLock == true then
+                        self.key:activate(brick.x,brick.y)
+                    end
+                end
+
+                -- only allow colliding with one brick, for corners
+                break
+
+            end
+
+
+
+            -- only check collision if we're in play
+            if brick.inPlay and self.ballA:collides(brick) then
+
+                self.keyCount = self.keyCount + 1
+    
+                self.ballA:collisionUpdate(brick)
+    
+                if self.keyCount%4 ==0 and self.key.inPlay == false and self.keyObtained == false then
+                    if self.hasLock == true then
+                        self.key:activate(brick.x,brick.y)
+                    end
+                end
+    
+                -- only allow colliding with one brick, for corners
+                break
+    
+            end
+
+
+            
+            -- only check collision if we're in play
+            if brick.inPlay and self.ballB:collides(brick) then
+
+                self.keyCount = self.keyCount + 1
+    
+                self.ballB:collisionUpdate(brick)
+    
+                if self.keyCount%4 ==0 and self.key.inPlay == false and self.keyObtained == false then
+                    if self.hasLock == true then
+                        self.key:activate(brick.x,brick.y)
+                    end
+                end
+    
+                -- only allow colliding with one brick, for corners
+                break
+    
+            end
+            
+
+            --implement this better but this works for now
+            if self.sizeupcount % 5 == 0 then
+                self.sizeupcount = self.sizeupcount + 1
+                self.paddle:sizeChange(1)
+            end
+
+        end
     end
 
     
@@ -481,7 +547,10 @@ function PlayState:render()
 
     -- render all particle systems
     for k, brick in pairs(self.bricks) do
-        brick:renderParticles()
+        
+        if brick.isLocked == false then
+            brick:renderParticles()
+        end
     end
 
     self.paddle:render()
@@ -491,6 +560,7 @@ function PlayState:render()
     end
 
     self.powerUp:render()
+    self.key:render()
 
     if self.ballUp == true and self.ballA.isActive == true then
         self.ballA:render()
@@ -513,6 +583,8 @@ function PlayState:render()
 
     --love.graphics.printf(ballCount, 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
     --debug purposes
+    --love.graphics.printf(self.powerCount, 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
+    --love.graphics.printf(self.keyCount, 0, VIRTUAL_HEIGHT / 2 - 25, VIRTUAL_WIDTH + 3, 'center')
 
 end
 
