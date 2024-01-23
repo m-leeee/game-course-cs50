@@ -36,13 +36,14 @@ function PlayState:enter(params)
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
     
-    brickHit = 0
-    ballUp = false
-    ballCount = 1
+    self.brickHit = 0
+    self.ballUp = false
+    self.ballCount = 1
+    self.sizeupcount = 1
 
 
-    ballActive = true 
-    ballAActive = false
+    --ballActive = true 
+    --ballAActive = false
 
     --powerup balls
     self.ballA = Ball()
@@ -51,13 +52,13 @@ function PlayState:enter(params)
     self.ballB = Ball()
     self.ballA.skin = math.random(7)
 
-    --self.ballB.x = 0
-    --self.ballB.y = 10
+    self.ballB.x = 0
+    self.ballB.y = 0
 
 
     self.ball.isActive = true
     self.ballA.isActive = false
-    self.ballB:reset()
+    --self.ballB:reset()
     self.ballB.skin = math.random(7)
     self.ballB.isActive = false
 end
@@ -84,11 +85,11 @@ function PlayState:update(dt)
     end
     self.powerUp:update(dt)
 
-    if ballUp == true and self.ballA.isActive == true then
+    if self.ballUp == true and self.ballA.isActive == true then
         self.ballA:update(dt)
     end
 
-    if ballUp == true and self.ballB.isActive == true then
+    if self.ballUp == true and self.ballB.isActive == true then
         self.ballB:update(dt)
     end
     --self.ballB:update(dt)
@@ -162,11 +163,11 @@ function PlayState:update(dt)
     if self.powerUp:collides(self.paddle) then
         --spawn a new ball
         self.powerUp.inPlay = false
-        ballUp = true
+        self.ballUp = true
         self.ballA.isActive = true 
         self.ballB.isActive = true
         --ballAActive = true
-        ballCount = 3
+        self.ballCount = 3
         
         self.ballA.x = self.paddle.x + (self.paddle.width / 2) - 4
         self.ballA.y = self.paddle.y - 8
@@ -192,7 +193,8 @@ function PlayState:update(dt)
 
             -- add to score
             self.score = self.score + (brick.tier * 200 + brick.color * 25)
-            brickHit = brickHit + 1
+            self.brickHit = self.brickHit + 1
+            self.sizeupcount = self.sizeupcount +1
 
             -- trigger the brick's hit function, which removes it from play
             brick:hit()
@@ -228,7 +230,7 @@ function PlayState:update(dt)
 
             self.ball:collisionUpdate(brick)
 
-            if brickHit == 3 then
+            if self.brickHit == 3 then
                 --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
                 self.powerUp:activate(brick.x,brick.y)
             end
@@ -245,7 +247,8 @@ function PlayState:update(dt)
 
             -- add to score
             self.score = self.score + (brick.tier * 200 + brick.color * 25)
-            brickHit = brickHit + 1
+            self.brickHit = self.brickHit + 1
+            self.sizeupcount = self.sizeupcount +1
 
             -- trigger the brick's hit function, which removes it from play
             brick:hit()
@@ -281,7 +284,7 @@ function PlayState:update(dt)
 
             self.ball:collisionUpdate(brick)
 
-            if brickHit == 2 then
+            if self.brickHit == 2 then
                 --brickHit = 0 --resets the counter for a new powerup, but will recycle the powerup thats active 
                 self.powerUp:activate(brick.x,brick.y)
             end
@@ -300,8 +303,9 @@ function PlayState:update(dt)
 
                     -- add to score
                     self.score = self.score + (brick.tier * 200 + brick.color * 25)
-                    brickHit = brickHit + 1
-        
+                    self.brickHit = self.brickHit + 1
+                    self.sizeupcount = self.sizeupcount +1
+
                     -- trigger the brick's hit function, which removes it from play
                     brick:hit()
         
@@ -350,7 +354,7 @@ function PlayState:update(dt)
 
                     -- add to score
                     self.score = self.score + (brick.tier * 200 + brick.color * 25)
-                    brickHit = brickHit + 1
+                    self.brickHit = self.brickHit + 1
         
                     -- trigger the brick's hit function, which removes it from play
                     brick:hit()
@@ -395,8 +399,8 @@ function PlayState:update(dt)
                 
 
                 --implement this better but this works for now
-                if brickHit >0 and brickHit % 5 == 0 then
-                    brickHit = brickHit + 1
+                if self.sizeupcount % 5 == 0 then
+                    self.sizeupcount = self.sizeupcount + 1
                     self.paddle:sizeChange(1)
                 end
 
@@ -406,7 +410,7 @@ function PlayState:update(dt)
     
 
     if self.ball.y >= VIRTUAL_HEIGHT then
-        ballCount = ballCount - 1
+        self.ballCount = self.ballCount - 1
         self.ball.y = 0
         self.ball.dx = 0
         self.ball.dy = 0
@@ -414,7 +418,7 @@ function PlayState:update(dt)
         --ballActive = false
     end
     if self.ballA.y >= VIRTUAL_HEIGHT then
-        ballCount = ballCount - 1
+        self.ballCount = self.ballCount - 1
         self.ballA.y = 0
         self.ballA.dx =0
         self.ballA.dy = 0 
@@ -422,7 +426,7 @@ function PlayState:update(dt)
         --ballAActive = false
     end
     if self.ballB.y >= VIRTUAL_HEIGHT then
-        ballCount = ballCount - 1
+        self.ballCount = self.ballCount - 1
         self.ballB.y = 0
         self.ballB.dx = 0
         self.ballB.dy = 0
@@ -431,7 +435,7 @@ function PlayState:update(dt)
     end
 
     -- if ball goes below bounds, revert to serve state and decrease health
-    if ballCount <1 then
+    if self.ballCount <1 then
         self.health = self.health - 1
         gSounds['hurt']:play()
         
@@ -488,11 +492,11 @@ function PlayState:render()
 
     self.powerUp:render()
 
-    if ballUp == true and self.ballA.isActive == true then
+    if self.ballUp == true and self.ballA.isActive == true then
         self.ballA:render()
     end
 
-    if ballUp == true and self.ballB.isActive == true then
+    if self.ballUp == true and self.ballB.isActive == true then
         self.ballB:render()
     end
     --self.ballB.render()
