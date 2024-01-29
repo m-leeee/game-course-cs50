@@ -112,6 +112,23 @@ function PlayState:update(dt)
 
 
     if self.canInput then
+
+        
+
+        local mx, my = love.mouse.getPosition( )
+        local gmx, gmy = push:toGame(mx,my)
+        if gmx > VIRTUAL_WIDTH - 272 and gmx < VIRTUAL_WIDTH - 16 and gmy > 16 and gmy < 272 then
+            local tx = (gmx - VIRTUAL_WIDTH + 272) / 32
+            tx = math.ceil(tx)
+            local ty = (gmy - 16) / 32
+            ty = math.ceil(ty)
+            self.boardHighlightY = ty - 1
+            self.boardHighlightX = tx - 1
+
+        end
+        
+        --Board(VIRTUAL_WIDTH - 272, 16, 1)
+
         -- move cursor around based on bounds of grid, playing sounds
         if love.keyboard.wasPressed('up') then
             self.boardHighlightY = math.max(0, self.boardHighlightY - 1)
@@ -128,7 +145,7 @@ function PlayState:update(dt)
         end
 
         -- if we've pressed enter, to select or deselect a tile...
-        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or love.mouse.wasPressed(1) then
             
             -- if same tile as currently highlighted, deselect
             local x = self.boardHighlightX + 1
@@ -306,4 +323,12 @@ function PlayState:render()
     love.graphics.printf('Score: ' .. tostring(self.score), 20, 52, 182, 'center')
     love.graphics.printf('Goal : ' .. tostring(self.scoreGoal), 20, 80, 182, 'center')
     love.graphics.printf('Timer: ' .. tostring(self.timer), 20, 108, 182, 'center')
+
+
+    --debug
+    --love.graphics.printf(tostring(gmx), 0, 158, 182, 'center')
+    --love.graphics.printf(tostring(gmy), 0, 178, 182, 'center')
+    --love.graphics.printf(tostring(tx), 37, 198, 182, 'center')
+    --love.graphics.printf(tostring(ty), 37, 218, 182, 'center')
+    --love.graphics.printf(tostring(check), 37, 238, 182, 'center')
 end
