@@ -234,6 +234,340 @@ function Board:calculateMatches()
     return #self.matches > 0 and self.matches or false
 end
 
+function Board:checkBoardViability()
+
+    --check edge cases where x or y is 1 or 8 
+    --corners must also be handled
+    local x=2
+    local y=2
+    local tempOG = self.tiles[y][x]
+    local tempx1= self.tiles[y][x + 1]
+    local tempx2= self.tiles[y][x - 1]
+    local tempy1 =self.tiles[y + 1][x]
+    local tempy2 =self.tiles[y - 1][x]
+
+    --corners
+
+    x = 1
+    y = 1 
+    tempOG = self.tiles[y][x]
+    tempx1= self.tiles[y][x + 1]
+    tempy1 =self.tiles[y + 1][x]
+
+    self.tiles[y][x] = tempx1
+    self.tiles[y][x + 1] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y][x + 1] = tempx1
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+
+    self.tiles[y][x] = tempy1
+    self.tiles[y + 1][x] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y + 1][x] = tempy1
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+    
+
+    y = 8
+    tempOG = self.tiles[y][x]
+    tempx1= self.tiles[y][x + 1]
+    tempy2 =self.tiles[y - 1][x]
+    
+    self.tiles[y][x] = tempx1
+    self.tiles[y][x + 1] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y][x + 1] = tempx1
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+    self.tiles[y][x] = tempy2
+    self.tiles[y - 1][x] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y - 1][x] = tempy2
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+    
+    x = 8
+    y = 1 
+    tempOG = self.tiles[y][x]
+    tempx2= self.tiles[y][x - 1]
+    tempy1 =self.tiles[y + 1][x]
+
+    self.tiles[y][x] = tempx2
+    self.tiles[y][x - 1] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y][x - 1] = tempx2
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+
+    self.tiles[y][x] = tempy1
+    self.tiles[y + 1][x] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y + 1][x] = tempy1
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+
+    y = 8
+    tempOG = self.tiles[y][x]
+    tempx2= self.tiles[y][x - 1]
+    tempy2 =self.tiles[y - 1][x]
+
+    self.tiles[y][x] = tempx2
+    self.tiles[y][x - 1] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y][x - 1] = tempx2
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+
+    self.tiles[y][x] = tempy2
+    self.tiles[y - 1][x] = tempOG
+    self:calculateMatches()
+    self.tiles[y][x] = tempOG
+    self.tiles[y - 1][x] = tempy2
+    if #self.matches > 0 then
+        self.matches = nil
+        return true
+    end
+
+    --edges 
+
+    x = 1
+    for y = 2,7 do
+        tempOG = self.tiles[y][x]
+        tempx1= self.tiles[y][x + 1]
+        tempy1 =self.tiles[y + 1][x]
+        tempy2 =self.tiles[y - 1][x]
+
+        
+        self.tiles[y][x] = tempx1
+        self.tiles[y][x + 1] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y][x + 1] = tempx1
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempy1
+        self.tiles[y + 1][x] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y + 1][x] = tempy1
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempy2
+        self.tiles[y - 1][x] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y - 1][x] = tempy2
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+        
+    end
+
+    x = 8
+    for y = 2,7 do
+        tempOG = self.tiles[y][x]
+        tempx2= self.tiles[y][x - 1]
+        tempy1 =self.tiles[y + 1][x]
+        tempy2 =self.tiles[y - 1][x]
+
+
+        self.tiles[y][x] = tempx2
+        self.tiles[y][x - 1] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y][x - 1] = tempx2
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempy1
+        self.tiles[y + 1][x] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y + 1][x] = tempy1
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempy2
+        self.tiles[y - 1][x] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y - 1][x] = tempy2
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+    end
+
+    y = 1
+    for x = 2,7 do
+        tempOG = self.tiles[y][x]
+        tempx1= self.tiles[y][x + 1]
+        tempx2= self.tiles[y][x - 1]
+        tempy1 =self.tiles[y + 1][x]
+
+        
+        self.tiles[y][x] = tempx1
+        self.tiles[y][x + 1] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y][x + 1] = tempx1
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempx2
+        self.tiles[y][x - 1] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y][x - 1] = tempx2
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempy1
+        self.tiles[y + 1][x] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y + 1][x] = tempy1
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+    end
+
+    y = 8
+    for x = 2,7 do
+        tempOG = self.tiles[y][x]
+        tempx1= self.tiles[y][x + 1]
+        tempx2= self.tiles[y][x - 1]
+        tempy2 =self.tiles[y - 1][x]
+
+        
+        self.tiles[y][x] = tempx1
+        self.tiles[y][x + 1] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y][x + 1] = tempx1
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempx2
+        self.tiles[y][x - 1] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y][x - 1] = tempx2
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+        self.tiles[y][x] = tempy2
+        self.tiles[y - 1][x] = tempOG
+        self:calculateMatches()
+        self.tiles[y][x] = tempOG
+        self.tiles[y - 1][x] = tempy2
+        if #self.matches > 0 then
+            self.matches = nil
+            return true
+        end
+
+    end
+
+
+    -- true middle cases
+
+    for y = 2, 7 do
+            for x = 2, 7 do
+            tempOG = self.tiles[y][x]
+            tempx1= self.tiles[y][x + 1]
+            tempx2= self.tiles[y][x - 1]
+            tempy1 =self.tiles[y + 1][x]
+            tempy2 =self.tiles[y - 1][x]
+
+            self.tiles[y][x] = tempx1
+            self.tiles[y][x + 1] = tempOG
+            self:calculateMatches()
+            self.tiles[y][x] = tempOG
+            self.tiles[y][x + 1] = tempx1
+            if #self.matches > 0 then
+                self.matches = nil
+                return true
+            end
+
+            self.tiles[y][x] = tempx2
+            self.tiles[y][x - 1] = tempOG
+            self:calculateMatches()
+            self.tiles[y][x] = tempOG
+            self.tiles[y][x - 1] = tempx2
+            if #self.matches > 0 then
+                self.matches = nil
+                return true
+            end
+
+            self.tiles[y][x] = tempy1
+            self.tiles[y + 1][x] = tempOG
+            self:calculateMatches()
+            self.tiles[y][x] = tempOG
+            self.tiles[y + 1][x] = tempy1
+            if #self.matches > 0 then
+                self.matches = nil
+                return true
+            end
+
+            self.tiles[y][x] = tempy2
+            self.tiles[y - 1][x] = tempOG
+            self:calculateMatches()
+            self.tiles[y][x] = tempOG
+            self.tiles[y - 1][x] = tempy2
+            if #self.matches > 0 then
+                self.matches = nil
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
 --[[
     Remove the matches from the Board by just setting the Tile slots within
     them to nil, then setting self.matches to nil.

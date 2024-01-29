@@ -105,6 +105,12 @@ function PlayState:update(dt)
         })
     end
 
+
+
+    self:checkBoardViability()
+
+
+
     if self.canInput then
         -- move cursor around based on bounds of grid, playing sounds
         if love.keyboard.wasPressed('up') then
@@ -142,7 +148,8 @@ function PlayState:update(dt)
                 gSounds['error']:play()
                 self.highlightedTile = nil
             else
-                
+
+
                 -- swap grid positions of tiles
                 local tempX = self.highlightedTile.gridX
                 local tempY = self.highlightedTile.gridY
@@ -160,16 +167,40 @@ function PlayState:update(dt)
 
                 self.board.tiles[newTile.gridY][newTile.gridX] = newTile
 
-                -- tween coordinates between the two so they swap
-                Timer.tween(0.1, {
-                    [self.highlightedTile] = {x = newTile.x, y = newTile.y},
-                    [newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
-                })
+                local matches = self.board:calculateMatches()
+
+                matches = self.board:calculateMatches()
+
                 
-                -- once the swap is finished, we can tween falling blocks as needed
-                :finish(function()
-                    self:calculateMatches()
-                end)
+
+                if matches then
+
+                    -- tween coordinates between the two so they swap
+                    Timer.tween(0.1, {
+                        [self.highlightedTile] = {x = newTile.x, y = newTile.y},
+                        [newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
+                    })
+                    
+                        -- once the swap is finished, we can tween falling blocks as needed
+                    :finish(function()
+                        self:calculateMatches()
+                    end)
+
+
+                else
+                    gSounds['error']:play()
+ 
+    
+                    newTile.gridX = self.highlightedTile.gridX
+                    newTile.gridY = self.highlightedTile.gridY
+                    self.highlightedTile.gridX = tempX
+                    self.highlightedTile.gridY = tempY
+                    self.board.tiles[self.highlightedTile.gridY][self.highlightedTile.gridX] = self.highlightedTile
+                    self.board.tiles[newTile.gridY][newTile.gridX] = newTile
+
+                    self.highlightedTile = nil
+                end
+
             end
         end
     end
@@ -223,6 +254,15 @@ function PlayState:calculateMatches()
     -- if no matches, we can continue playing
     else
         self.canInput = true
+    end
+end
+
+
+function PlayState:checkBoardViability()
+    local playable = self.board:checkBoardViability()
+
+    if not playable then
+        self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
     end
 end
 
