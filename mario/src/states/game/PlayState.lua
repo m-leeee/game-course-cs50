@@ -7,10 +7,14 @@
 
 PlayState = Class{__includes = BaseState}
 
-function PlayState:init()
+function PlayState:enter(params)
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(100, 10)
+
+    self.levelwidth = params.levelwidth
+
+
+    self.level = LevelMaker.generate(self.levelwidth, 10)
     self.tileMap = self.level.tileMap
     self.background = math.random(3)
     self.backgroundX = 0
@@ -89,6 +93,7 @@ function PlayState:render()
     --debug 
     --love.graphics.print(tostring(self.player.keyobtained), 20, 7)
     --love.graphics.print(tostring(self.player.openLock), 20, 20)
+    --love.graphics.print(tostring(self.levelwidth), 20, 20)
 end
 
 function PlayState:updateCamera()

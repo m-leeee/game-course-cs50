@@ -107,7 +107,7 @@ function LevelMaker.generate(width, height)
             local blockcreated = false
             local pillarcreated = blockHeight == 2 
             -- chance to spawn a block
-            if math.random(10) == 1 then
+            if math.random(10) == 1 and x < width-1 then
                 blockcreated = true 
                 table.insert(objects,
 
@@ -171,8 +171,12 @@ function LevelMaker.generate(width, height)
                 )
             end
 
+            local heightchanger = 0
+            if pillarcreated then
+                heightchanger = 2
+            end
 
-            if (math.random(width) >= width/7*6 or x==width) and lockspawned ==false then 
+            if (math.random(width) >= width*.95 or x==width) and lockspawned ==false and blockcreated == false then 
                 local lock = GameObject {
                     texture = 'keys', 
                     x = (x - 1) * TILE_SIZE,
@@ -192,6 +196,79 @@ function LevelMaker.generate(width, height)
                         if player.keyobtained then
                             gSounds['empty-block']:play()
                             player.openLock = true
+
+                            local flagpole1 = GameObject {
+                                texture = 'flags',
+                                x = (width-2) * TILE_SIZE,
+                                y = (5-heightchanger) * TILE_SIZE ,
+                                width = 16,
+                                height = 16,
+                                frame = 19,
+                                collidable = true,
+                                consumable = true,
+                                solid = false,
+
+                                -- gem has its own function to add to the player's score
+                                onConsume = function(player, object)
+                                    gSounds['pickup']:play()
+                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10})
+                                end
+                            }
+                            local flagpole2 = GameObject {
+                                texture = 'flags',
+                                x = (width-2) * TILE_SIZE,
+                                y = (4-heightchanger) * TILE_SIZE,
+                                width = 16,
+                                height = 16,
+                                frame = 10,
+                                collidable = true,
+                                consumable = true,
+                                solid = false,
+
+                                -- gem has its own function to add to the player's score
+                                onConsume = function(player, object)
+                                    gSounds['pickup']:play()
+                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10})
+                                end
+                            }
+                            local flagpole3 = GameObject {
+                                texture = 'flags',
+                                x = (width-2) * TILE_SIZE,
+                                y = (3-heightchanger) * TILE_SIZE,
+                                width = 16,
+                                height = 16,
+                                frame = 1,
+                                collidable = true,
+                                consumable = true,
+                                solid = false,
+
+                                -- gem has its own function to add to the player's score
+                                onConsume = function(player, object)
+                                    gSounds['pickup']:play()
+                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10})
+                                end
+                            }
+                            
+
+
+
+                            local flag = GameObject {
+                                texture = 'flags',
+                                x = (width-2) * TILE_SIZE+7,
+                                y = (4-heightchanger) * TILE_SIZE-12,
+                                width = 16,
+                                height = 16,
+                                
+                                frame = 7,
+                                collidable = false
+                            }
+
+
+                            table.insert(objects, flagpole1)
+                            table.insert(objects, flagpole2)
+                            table.insert(objects, flagpole3)
+                            table.insert(objects, flag)
+
                         end
 
                     end
