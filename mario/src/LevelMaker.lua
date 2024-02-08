@@ -26,6 +26,7 @@ function LevelMaker.generate(width, height)
     local keyspawned = false
     local lockspawned = false
     local pillaratflag = false
+    local flagheight = 0
 
     -- insert blank tables into tiles for later access
     for x = 1, height do
@@ -66,9 +67,12 @@ function LevelMaker.generate(width, height)
 
             local pillarcreated = false
             -- chance to generate a pillar
-            if math.random(2)==1 and x ~= (width-1)then --set as random(8) by default
+            if math.random(2)==1 then --and x ~= (width-1)then --set as random(8) by default
                 blockHeight = 2
                 pillarcreated = true 
+                if x == (width-1)then
+                    pillaratflag = true
+                end
 
                 
                 -- chance to generate bush on pillar
@@ -193,6 +197,10 @@ function LevelMaker.generate(width, height)
                     -- collision function takes itself
                     onCollide = function(obj, player)
 
+                        if pillaratflag then
+                            flagheight =2
+                        end
+
                         if player.keyobtained then
                             gSounds['empty-block']:play()
                             player.openLock = true
@@ -200,7 +208,7 @@ function LevelMaker.generate(width, height)
                             local flagpole1 = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE,
-                                y = 5 * TILE_SIZE ,
+                                y = (5-flagheight) * TILE_SIZE ,
                                 width = 16,
                                 height = 16,
                                 frame = 19,
@@ -217,7 +225,7 @@ function LevelMaker.generate(width, height)
                             local flagpole2 = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE,
-                                y = 4 * TILE_SIZE,
+                                y = (4-flagheight) * TILE_SIZE,
                                 width = 16,
                                 height = 16,
                                 frame = 10,
@@ -234,7 +242,7 @@ function LevelMaker.generate(width, height)
                             local flagpole3 = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE,
-                                y = 3 * TILE_SIZE,
+                                y = (3-flagheight) * TILE_SIZE,
                                 width = 16,
                                 height = 16,
                                 frame = 1,
@@ -255,7 +263,7 @@ function LevelMaker.generate(width, height)
                             local flag = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE+7,
-                                y = 4 * TILE_SIZE-12,
+                                y = (4-flagheight) * TILE_SIZE-12,
                                 width = 16,
                                 height = 16,
                                 
