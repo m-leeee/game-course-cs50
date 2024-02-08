@@ -12,7 +12,7 @@ function PlayState:enter(params)
     self.camY = 0
 
     self.levelwidth = params.levelwidth
-
+    self.score = params.score
 
     self.level = LevelMaker.generate(self.levelwidth, 10)
     self.tileMap = self.level.tileMap
@@ -45,6 +45,7 @@ function PlayState:enter(params)
     self:spawnEnemies()
 
     self.player:changeState('falling')
+    self.player.score = self.score
 end
 
 function PlayState:update(dt)

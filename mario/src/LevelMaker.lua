@@ -25,6 +25,7 @@ function LevelMaker.generate(width, height)
     local keycolor = math.random(4)
     local keyspawned = false
     local lockspawned = false
+    local pillaratflag = false
 
     -- insert blank tables into tiles for later access
     for x = 1, height do
@@ -47,7 +48,7 @@ function LevelMaker.generate(width, height)
             keyforcer = true
         end
 
-        if math.random(7) == 1 and keyforcer == false then -- could and x>1 to fix the first problem
+        if math.random(7) == 1 and keyforcer == false and (x < (width-2)) then -- could and x>1 to fix the first problem
             for y = 7, height do
                 table.insert(tiles[y],
                     Tile(x, y, tileID, nil, tileset, topperset))
@@ -63,9 +64,12 @@ function LevelMaker.generate(width, height)
                     Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
             end
 
+            local pillarcreated = false
             -- chance to generate a pillar
-            if math.random(8) == 1 then
+            if math.random(2)==1 and x ~= (width-1)then --set as random(8) by default
                 blockHeight = 2
+                pillarcreated = true 
+
                 
                 -- chance to generate bush on pillar
                 if math.random(8) == 1 then
@@ -105,9 +109,8 @@ function LevelMaker.generate(width, height)
             end
 
             local blockcreated = false
-            local pillarcreated = blockHeight == 2 
             -- chance to spawn a block
-            if math.random(10) == 1 and x < width-1 then
+            if math.random(4) == 1 and x < (width-1) then --default is random(10)
                 blockcreated = true 
                 table.insert(objects,
 
@@ -171,16 +174,13 @@ function LevelMaker.generate(width, height)
                 )
             end
 
-            local heightchanger = 0
-            if pillarcreated then
-                heightchanger = 2
-            end
+
 
             if (math.random(width) >= width*.95 or x==width) and lockspawned ==false and blockcreated == false then 
                 local lock = GameObject {
                     texture = 'keys', 
                     x = (x - 1) * TILE_SIZE,
-                    y = 1 * TILE_SIZE - 4,
+                    y = 1 * TILE_SIZE,
                     width = 16,
                     height = 16,
                     frame = keycolor+4,
@@ -200,7 +200,7 @@ function LevelMaker.generate(width, height)
                             local flagpole1 = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE,
-                                y = (5-heightchanger) * TILE_SIZE ,
+                                y = 5 * TILE_SIZE ,
                                 width = 16,
                                 height = 16,
                                 frame = 19,
@@ -211,13 +211,13 @@ function LevelMaker.generate(width, height)
                                 -- gem has its own function to add to the player's score
                                 onConsume = function(player, object)
                                     gSounds['pickup']:play()
-                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10})
+                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10, score = player.score})
                                 end
                             }
                             local flagpole2 = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE,
-                                y = (4-heightchanger) * TILE_SIZE,
+                                y = 4 * TILE_SIZE,
                                 width = 16,
                                 height = 16,
                                 frame = 10,
@@ -228,13 +228,13 @@ function LevelMaker.generate(width, height)
                                 -- gem has its own function to add to the player's score
                                 onConsume = function(player, object)
                                     gSounds['pickup']:play()
-                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10})
+                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10, score = player.score})
                                 end
                             }
                             local flagpole3 = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE,
-                                y = (3-heightchanger) * TILE_SIZE,
+                                y = 3 * TILE_SIZE,
                                 width = 16,
                                 height = 16,
                                 frame = 1,
@@ -245,7 +245,7 @@ function LevelMaker.generate(width, height)
                                 -- gem has its own function to add to the player's score
                                 onConsume = function(player, object)
                                     gSounds['pickup']:play()
-                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10})
+                                    gStateMachine:change('play', {levelwidth = width + math.floor(width*.2)+10, score = player.score})
                                 end
                             }
                             
@@ -255,7 +255,7 @@ function LevelMaker.generate(width, height)
                             local flag = GameObject {
                                 texture = 'flags',
                                 x = (width-2) * TILE_SIZE+7,
-                                y = (4-heightchanger) * TILE_SIZE-12,
+                                y = 4 * TILE_SIZE-12,
                                 width = 16,
                                 height = 16,
                                 
@@ -288,13 +288,6 @@ function LevelMaker.generate(width, height)
                     local keyy = 4 
                     if pillarcreated == true then
                         keyy = 2
-                        if blockcreated == true then
-                            keyy = 1
-                        end
-                    else
-                        if blockcreated == true then
-                            keyy = 2
-                        end
                     end
 
                     local key = GameObject {
