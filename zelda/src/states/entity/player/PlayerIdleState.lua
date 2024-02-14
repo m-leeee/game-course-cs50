@@ -64,7 +64,7 @@ function PlayerIdleState:update(dt)
                 -- check if hitbox collides with any entities in the scene
         for k, object in pairs(self.dungeon.currentRoom.objects) do
             if self.dungeon.currentRoom.objects[k].type == 'pot' and self.grabHitbox:collides(object) then
-                
+                self.entity.holding = true
                 self.entity:changeState('potidle')
             end
         end

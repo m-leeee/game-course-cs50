@@ -121,6 +121,7 @@ function Room:generateObjects()
         --end
         --self.player.holding = true
 
+        if self.player.holding == false then
         if self.player.direction == 'left' then
             
             self.player.x = pot.x +16.1 
@@ -137,7 +138,7 @@ function Room:generateObjects()
         end
 
         end
-
+    end
 
 
 
@@ -310,6 +311,14 @@ function Room:render()
     
     if self.player then
         self.player:render()
+    end
+
+    if self.player.holding then
+        for k, object in pairs(self.objects) do
+            if object.type == 'pot' then
+                object:render(self.adjacentOffsetX, self.adjacentOffsetY)
+            end
+        end
     end
 
     love.graphics.setStencilTest()
