@@ -104,6 +104,46 @@ function Room:generateObjects()
 
     -- add to list of objects in scene (only one switch for now)
     table.insert(self.objects, switch)
+
+    local pot = GameObject(
+        GAME_OBJECT_DEFS['pot'],
+        math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
+                    VIRTUAL_WIDTH - TILE_SIZE * 2 - 16),
+        math.random(MAP_RENDER_OFFSET_Y + TILE_SIZE,
+                    VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 16)
+    )
+    pot.onCollide = function()
+
+
+       -- if self.player.gStateMachine.current == 'potidle' then 
+       --     pot.x = self.player.x
+       --     pot.y = self.player.y
+        --end
+        --self.player.holding = true
+
+        if self.player.direction == 'left' then
+            
+            self.player.x = pot.x +16.1 
+
+        elseif self.player.direction == 'right' then
+            self.player.x = pot.x -16.1
+
+        elseif self.player.direction == 'up' then
+            self.player.y = pot.y +5.1
+
+        else
+            self.player.y = pot.y -22.1
+
+        end
+
+        end
+
+
+
+
+        table.insert(self.objects, pot)
+
+
 end
 
 --[[
@@ -157,7 +197,7 @@ function Room:generateHeart(x,y,player)
             if player.health < 6 then
                 player.health = player.health+1
             end
-            gSounds['door']:play()
+            --gSounds['door']:play() no cool sound effect 
         end
     end
 

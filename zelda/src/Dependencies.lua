@@ -31,6 +31,8 @@ require 'src/states/entity/player/PlayerIdleState'
 require 'src/states/entity/player/PlayerSwingSwordState'
 require 'src/states/entity/player/PlayerWalkState'
 
+require 'src/states/entity/player/PlayerHoldPotIdleState'
+
 require 'src/states/game/GameOverState'
 require 'src/states/game/PlayState'
 require 'src/states/game/StartState'
@@ -42,7 +44,9 @@ gTextures = {
     ['character-swing-sword'] = love.graphics.newImage('graphics/character_swing_sword.png'),
     ['hearts'] = love.graphics.newImage('graphics/hearts.png'),
     ['switches'] = love.graphics.newImage('graphics/switches.png'),
-    ['entities'] = love.graphics.newImage('graphics/entities.png')
+    ['entities'] = love.graphics.newImage('graphics/entities.png'),
+    ['character-pot-lift'] = love.graphics.newImage('graphics/character_pot_lift.png'),
+    ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png')
 }
 
 gFrames = {
@@ -51,7 +55,9 @@ gFrames = {
     ['character-swing-sword'] = GenerateQuads(gTextures['character-swing-sword'], 32, 32),
     ['entities'] = GenerateQuads(gTextures['entities'], 16, 16),
     ['hearts'] = GenerateQuads(gTextures['hearts'], 16, 16),
-    ['switches'] = GenerateQuads(gTextures['switches'], 16, 18)
+    ['switches'] = GenerateQuads(gTextures['switches'], 16, 18),
+    ['character-pot-lift'] = GenerateQuads(gTextures['character-pot-lift'], 32, 32),
+    ['character-pot-walk'] = GenerateQuads(gTextures['character-pot-walk'], 16, 32)
 }
 
 gFonts = {
