@@ -65,11 +65,20 @@ function PlayerIdleState:update(dt)
         for k, object in pairs(self.dungeon.currentRoom.objects) do
             if self.dungeon.currentRoom.objects[k].type == 'pot' and self.grabHitbox:collides(object) then
                 self.entity.holding = true
-                self.entity:changeState('potidle')
+                self.entity:changeState('liftpot')
+                --self.entity:changeAnimation('potlift-' .. self.entity.direction)
+
             end
         end
 
 
 
     end
+--[[     if self.entity.currentAnimName ==('potlift-' .. self.entity.direction) and 
+    (self.entity.currentAnimation.timesPlayed > 0 or
+    self.entity.currentAnimation:getCurrentFrame()%3 ==0) then
+
+        self.entity:changeState('potidle')
+    end ]]
+
 end

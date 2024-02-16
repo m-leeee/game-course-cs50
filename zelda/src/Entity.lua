@@ -39,6 +39,7 @@ function Entity:init(def)
 
     self.dead = false
     self.drops = false
+    self.currentAnimName = 'name'
 end
 
 function Entity:createAnimations(animations)
@@ -77,6 +78,7 @@ function Entity:changeState(name)
 end
 
 function Entity:changeAnimation(name)
+    self.currentAnimName = name
     self.currentAnimation = self.animations[name]
 end
 

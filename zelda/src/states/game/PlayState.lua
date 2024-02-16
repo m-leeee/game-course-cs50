@@ -34,7 +34,8 @@ function PlayState:init()
         ['idle'] = function() return PlayerIdleState(self.player, self.dungeon) end,
         ['swing-sword'] = function() return PlayerSwingSwordState(self.player, self.dungeon) end,
         ['potidle'] = function() return PlayerHoldPotIdleState(self.player, self.dungeon) end,
-        ['potwalk'] = function() return PlayerHoldPotWalkState(self.player, self.dungeon) end
+        ['potwalk'] = function() return PlayerHoldPotWalkState(self.player, self.dungeon) end,
+        ['liftpot'] =  function() return PlayerLiftPotState(self.player, self.dungeon) end
     }
     self.player:changeState('idle')
 end

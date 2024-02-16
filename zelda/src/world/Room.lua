@@ -313,7 +313,7 @@ function Room:render()
         self.player:render()
     end
 
-    if self.player.holding then
+    if self.player.holding and self.player.currentAnimName ~=('potlift-' .. self.player.direction) then
         for k, object in pairs(self.objects) do
             if object.type == 'pot' then
                 object:render(self.adjacentOffsetX, self.adjacentOffsetY)
