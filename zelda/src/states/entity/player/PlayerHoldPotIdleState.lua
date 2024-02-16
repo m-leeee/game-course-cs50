@@ -26,6 +26,10 @@ function PlayerHoldPotIdleState:update(dt)
         end
     end
 
+    if love.keyboard.isDown('left') or love.keyboard.isDown('right') or
+    love.keyboard.isDown('up') or love.keyboard.isDown('down') then
+        self.entity:changeState('potwalk')
+    end
 
 
 

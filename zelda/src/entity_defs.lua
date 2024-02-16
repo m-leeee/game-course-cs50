@@ -70,22 +70,22 @@ ENTITY_DEFS = {
                 looping = false,
                 texture = 'character-swing-sword'
             },
-            ['walk-left-pot'] = {
+            ['potwalk-left'] = {
                 frames = {13, 14, 15, 16},
                 interval = 0.155,
                 texture = 'character-pot-walk'
             },
-            ['walk-right-pot'] = {
+            ['potwalk-right'] = {
                 frames = {5, 6, 7, 8},
                 interval = 0.15,
                 texture = 'character-pot-walk'
             },
-            ['walk-down-pot'] = {
+            ['potwalk-down'] = {
                 frames = {1, 2, 3, 4},
                 interval = 0.15,
                 texture = 'character-pot-walk'
             },
-            ['walk-up-pot'] = {
+            ['potwalk-up'] = {
                 frames = {9, 10, 11, 12},
                 interval = 0.15,
                 texture = 'character-pot-walk'

@@ -6,9 +6,9 @@
     cogden@cs50.harvard.edu
 ]]
 
-PlayerWalkState = Class{__includes = EntityWalkState}
+PlayerHoldPotWalkState = Class{__includes = EntityWalkState}
 
-function PlayerWalkState:init(player, dungeon)
+function PlayerHoldPotWalkState:init(player, dungeon)
     self.entity = player
     self.dungeon = dungeon
 
@@ -16,25 +16,34 @@ function PlayerWalkState:init(player, dungeon)
     self.entity.offsetY = 5
     self.entity.offsetX = 0
 
-    
 
 end
 
-function PlayerWalkState:update(dt)
+function PlayerHoldPotWalkState:update(dt)
+
+    for k, object in pairs(self.dungeon.currentRoom.objects) do
+        if self.dungeon.currentRoom.objects[k].type == 'pot' then
+            
+            object.x = self.entity.x
+            object.y = self.entity.y-8
+        end
+    end
+
+
     if love.keyboard.isDown('left') then
         self.entity.direction = 'left'
-        self.entity:changeAnimation('walk-left')
+        self.entity:changeAnimation('potwalk-left')
     elseif love.keyboard.isDown('right') then
         self.entity.direction = 'right'
-        self.entity:changeAnimation('walk-right')
+        self.entity:changeAnimation('potwalk-right')
     elseif love.keyboard.isDown('up') then
         self.entity.direction = 'up'
-        self.entity:changeAnimation('walk-up')
+        self.entity:changeAnimation('potwalk-up')
     elseif love.keyboard.isDown('down') then
         self.entity.direction = 'down'
-        self.entity:changeAnimation('walk-down')
+        self.entity:changeAnimation('potwalk-down')
     else
-        self.entity:changeState('idle')
+        self.entity:changeState('potidle')
     end
 
     if love.keyboard.wasPressed('space') and (self.entity.holding == false) then
@@ -56,14 +65,14 @@ function PlayerWalkState:update(dt)
             self.entity.x = self.entity.x - PLAYER_WALK_SPEED * dt
             
             -- check for colliding into doorway to transition
-            for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
+--[[             for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
                 if self.entity:collides(doorway) and doorway.open then
 
                     -- shift entity to center of door to avoid phasing through wall
                     self.entity.y = doorway.y + 4
                     Event.dispatch('shift-left')
                 end
-            end
+            end ]]
 
             -- readjust
             self.entity.x = self.entity.x + PLAYER_WALK_SPEED * dt
@@ -72,7 +81,7 @@ function PlayerWalkState:update(dt)
             -- temporarily adjust position
             self.entity.x = self.entity.x + PLAYER_WALK_SPEED * dt
             
-            -- check for colliding into doorway to transition
+--[[             -- check for colliding into doorway to transition
             for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
                 if self.entity:collides(doorway) and doorway.open then
 
@@ -80,7 +89,7 @@ function PlayerWalkState:update(dt)
                     self.entity.y = doorway.y + 4
                     Event.dispatch('shift-right')
                 end
-            end
+            end ]]
 
             -- readjust
             self.entity.x = self.entity.x - PLAYER_WALK_SPEED * dt
@@ -90,14 +99,14 @@ function PlayerWalkState:update(dt)
             self.entity.y = self.entity.y - PLAYER_WALK_SPEED * dt
             
             -- check for colliding into doorway to transition
-            for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
+--[[             for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
                 if self.entity:collides(doorway) and doorway.open then
 
                     -- shift entity to center of door to avoid phasing through wall
                     self.entity.x = doorway.x + 8
                     Event.dispatch('shift-up')
                 end
-            end
+            end ]]
 
             -- readjust
             self.entity.y = self.entity.y + PLAYER_WALK_SPEED * dt
@@ -107,66 +116,17 @@ function PlayerWalkState:update(dt)
             self.entity.y = self.entity.y + PLAYER_WALK_SPEED * dt
             
             -- check for colliding into doorway to transition
-            for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
+--[[             for k, doorway in pairs(self.dungeon.currentRoom.doorways) do
                 if self.entity:collides(doorway) and doorway.open then
 
                     -- shift entity to center of door to avoid phasing through wall
                     self.entity.x = doorway.x + 8
                     Event.dispatch('shift-down')
                 end
-            end
+            end ]]
 
             -- readjust
             self.entity.y = self.entity.y - PLAYER_WALK_SPEED * dt
         end
     end
-
-
-
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-       
-        local grabboxX, grabboxY, grabboxWidth, grabboxHeight
-        if self.entity.direction == 'left' then
-            grabboxWidth = 8
-            grabboxHeight = 16
-            grabboxX = self.entity.x - grabboxWidth
-            grabboxY = self.entity.y + 2
-        elseif self.entity.direction == 'right' then
-            grabboxWidth = 8
-            grabboxHeight = 16
-            grabboxX = self.entity.x + self.entity.width
-            grabboxY = self.entity.y + 2
-        elseif self.entity.direction == 'up' then
-            grabboxWidth = 16
-            grabboxHeight = 8
-            grabboxX = self.entity.x
-            grabboxY = self.entity.y - grabboxHeight
-        else
-            grabboxWidth = 16
-            grabboxHeight = 8
-            grabboxX = self.entity.x
-            grabboxY = self.entity.y + self.entity.height
-        end
-    
-        -- separate hitbox for the player's sword; will only be active during this state
-        self.grabHitbox = Hitbox(grabboxX, grabboxY, grabboxWidth, grabboxHeight)
-
-        --self.entity:changeState('potidle')
-        
-
-        --define a hitbox, check if hitbox hits pots on enter, if so, enter hold pot 
-                -- check if hitbox collides with any entities in the scene
-        for k, object in pairs(self.dungeon.currentRoom.objects) do
-            if self.dungeon.currentRoom.objects[k].type == 'pot' and self.grabHitbox:collides(object) then
-                self.entity.holding = true
-                self.entity:changeState('potidle')
-            end
-        end
-
-
-
-    end
-
-
-
 end
