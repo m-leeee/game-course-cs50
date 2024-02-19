@@ -40,6 +40,8 @@ function Room:init(player)
     -- used for drawing when this room is the next room, adjacent to the active
     self.adjacentOffsetX = 0
     self.adjacentOffsetY = 0
+
+    self.projectiles = {}
 end
 
 --[[
@@ -245,6 +247,16 @@ function Room:update(dt)
                 gStateMachine:change('game-over')
             end
         end
+
+        for p, proj in pairs(self.projectiles)do
+            -- collision between the player and entities in the room
+            if not entity.dead and proj:collides(entity) then
+                gSounds['hit-player']:play()
+                entity:damage(1)
+                proj.state = 'broken'
+            end
+        end
+
     end
 
     for k, object in pairs(self.objects) do
@@ -261,6 +273,26 @@ function Room:update(dt)
             end
         end
     end
+
+    for k, proj in pairs(self.projectiles) do
+        proj:update(dt)
+        if proj.state == 'broken' then
+            table.remove(self.projectiles,k)
+        end
+
+--[[         -- trigger collision callback on object
+        if self.player:collides(object) then
+            if object.consumable then
+                object:onConsume()
+                table.remove(self.objects,k)            
+            else
+                object:onCollide()
+
+            end
+        end ]]
+    end
+
+
 end
 
 function Room:render()
@@ -285,6 +317,10 @@ function Room:render()
 
     for k, entity in pairs(self.entities) do
         if not entity.dead then entity:render(self.adjacentOffsetX, self.adjacentOffsetY) end
+    end
+
+    for k, projectiles in pairs(self.projectiles) do
+        projectiles:render(self.adjacentOffsetX, self.adjacentOffsetY)
     end
 
     -- stencil out the door arches so it looks like the player is going through

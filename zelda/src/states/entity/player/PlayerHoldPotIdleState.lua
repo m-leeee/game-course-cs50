@@ -13,7 +13,29 @@ end
 
 function PlayerHoldPotIdleState:update(dt)
 
-    
+    --create projectile that looks like pot 
+    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+        local potproj = Projectile(
+           self.entity, self.dungeon
+        )
+
+        table.insert(self.dungeon.currentRoom.projectiles, potproj)
+
+
+        --delete original pot obect
+
+        for k, object in pairs(self.dungeon.currentRoom.objects) do
+            if self.dungeon.currentRoom.objects[k].type == 'pot' then
+                table.remove(self.dungeon.currentRoom.objects, k)
+            end
+        end
+        -- set player to idle
+        self.entity.holding = false
+        self.entity:changeState('idle')
+          
+    end
+
+
 
     --if love.keyboard.isDown('left') or love.keyboard.isDown('right') or
     --   love.keyboard.isDown('up') or love.keyboard.isDown('down') then
