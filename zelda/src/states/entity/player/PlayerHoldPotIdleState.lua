@@ -22,7 +22,7 @@ function PlayerHoldPotIdleState:update(dt)
         table.insert(self.dungeon.currentRoom.projectiles, potproj)
 
 
-        --delete original pot obect
+        --delete original pot object
 
         for k, object in pairs(self.dungeon.currentRoom.objects) do
             if self.dungeon.currentRoom.objects[k].type == 'pot' then
