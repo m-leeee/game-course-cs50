@@ -209,15 +209,36 @@ function Level:update(dt)
         local xPos, yPos = self.launchMarker.alien.body:getPosition()
         local xVel, yVel = self.launchMarker.alien.body:getLinearVelocity()
         
+        local splitstop = false
+        for k, playersplit in pairs(self.psplits) do
+            local xp,yp = playersplit.body:getPosition()
+            local xv, yv =  playersplit.body:getLinearVelocity()
+            if (xp < 0 or xp > VIRTUAL_WIDTH or (math.abs(xv) + math.abs(yv) < 1.5)) then
+                splitstop = true 
+            else
+                splitstop = false 
+                break
+            end
+
+        end
+
         -- if we fired our alien to the left or it's almost done rolling, respawn
-        if xPos < 0 or xPos > VIRTUAL_WIDTH or (math.abs(xVel) + math.abs(yVel) < 1.5) then
+        if (xPos < 0 or xPos > VIRTUAL_WIDTH or (math.abs(xVel) + math.abs(yVel) < 1.5)) and splitstop then
+
+
             self.launchMarker.alien.body:destroy()
             self.launchMarker = AlienLaunchMarker(self.world)
-
+            for k, playersplit in pairs(self.psplits) do
+                playersplit.body:destroy()
+            end
+            self.psplits = {}
             -- re-initialize level if we have no more aliens
             if #self.aliens == 0 then
                 gStateMachine:change('start')
             end
+
+            self.playercollided = false
+            self.playersplit = false
         end
     end
 end
