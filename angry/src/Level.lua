@@ -27,7 +27,7 @@ function Level:init()
     -- define collision callbacks for our world; the World object expects four,
     -- one for different stages of any given collision
     function beginContact(a, b, coll)
-        self.playercollided = true
+        
 
         local types = {}
         types[a:getUserData()] = true
@@ -35,7 +35,7 @@ function Level:init()
 
         -- if we collided between both the player and an obstacle...
         if types['Obstacle'] and types['Player'] then
-
+            self.playercollided = true
             -- grab the body that belongs to the player
             local playerFixture = a:getUserData() == 'Player' and a or b
             local obstacleFixture = a:getUserData() == 'Obstacle' and a or b
@@ -51,7 +51,7 @@ function Level:init()
 
         -- if we collided between an obstacle and an alien, as by debris falling...
         if types['Obstacle'] and types['Alien'] then
-
+            self.playercollided = true
             -- grab the body that belongs to the player
             local obstacleFixture = a:getUserData() == 'Obstacle' and a or b
             local alienFixture = a:getUserData() == 'Alien' and a or b
@@ -67,7 +67,7 @@ function Level:init()
 
         -- if we collided between the player and the alien...
         if types['Player'] and types['Alien'] then
-
+            self.playercollided = true
             -- grab the bodies that belong to the player and alien
             local playerFixture = a:getUserData() == 'Player' and a or b
             local alienFixture = a:getUserData() == 'Alien' and a or b
@@ -83,6 +83,7 @@ function Level:init()
 
         -- if we hit the ground, play a bounce sound
         if types['Player'] and types['Ground'] then
+            self.playercollided = true
             gSounds['bounce']:stop()
             gSounds['bounce']:play()
         end
@@ -147,7 +148,7 @@ function Level:update(dt)
     -- Box2D world update code; resolves collisions and processes callbacks
     self.world:update(dt)
 
-    if love.keyboard.wasPressed('space') then --and not self.playercollided and not self.playersplit then
+    if love.keyboard.wasPressed('space') and not self.playercollided and not self.playersplit then
         self.playersplit = true
         local playerx = self.launchMarker.alien.body:getX()
         local playery = self.launchMarker.alien.body:getY()
