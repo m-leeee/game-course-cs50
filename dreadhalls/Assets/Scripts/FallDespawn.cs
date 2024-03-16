@@ -10,6 +10,7 @@ public class FallDespawn : MonoBehaviour
     // Start is called before the first frame update
 
     ScoreManager roomcounter; 
+
     
     void Start()
     {
@@ -23,6 +24,7 @@ public class FallDespawn : MonoBehaviour
         if (ypos < -2)
         {
             ScoreManager.Score = 0; 
+            DontDestroy.destroycheck = true;
             SceneManager.LoadScene("GameOver");
         } 
     }

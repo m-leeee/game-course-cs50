@@ -85,7 +85,7 @@ public class LevelGenerator : MonoBehaviour {
 				}
 
 				if (generateRoof){
-					//CreateChildPrefab(ceilingPrefab, wallsParent, x, 4, z);
+					CreateChildPrefab(ceilingPrefab, wallsParent, x, 4, z); //comment this for debug to see the level easier in scene
 				}
 			}
 		}
