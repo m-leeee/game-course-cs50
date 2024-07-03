@@ -2,6 +2,7 @@ Shiba = Class{__includes = Boss}
 
 function Shiba:init(def)
         Entity.init(self, def)
+
 --[[     self.animations = ENTITY_DEFS['shiba'].animations
             --walkSpeed = ENTITY_DEFS['player'].walkSpeed,
             

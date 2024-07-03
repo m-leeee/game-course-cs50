@@ -23,6 +23,8 @@ function Entity:init(def)
     self.walkSpeed = def.walkSpeed
 
     self.health = def.health
+    self.maxhealth = def.maxhealth
+    self.hppercent = self.health / self.maxhealth
 
     -- flags for flashing the entity when hit
     self.invulnerable = false
@@ -95,6 +97,8 @@ function Entity:update(dt)
     if self.currentAnimation then
         self.currentAnimation:update(dt)
     end
+
+    self.hppercent = self.health / self.maxhealth
 end
 
 function Entity:processAI(params, dt)
@@ -113,4 +117,13 @@ function Entity:render(adjacentOffsetX, adjacentOffsetY)
     self.stateMachine:render()
     love.graphics.setColor(1, 1, 1, 1)
     self.x, self.y = self.x - (adjacentOffsetX or 0), self.y - (adjacentOffsetY or 0)
+
+
+
+        --rudimentary hp bar implementation: white backing at 100pix, purple front scaled to %
+        love.graphics.setColor(255, 255, 255, 255) 
+        love.graphics.rectangle('line', self.x, self.y, 30, 1)
+        love.graphics.setColor(255, 0, 255, 255)
+        love.graphics.rectangle('line', self.x, self.y, self.hppercent*30, 1)
+        love.graphics.setColor(255, 255, 255, 255)
 end

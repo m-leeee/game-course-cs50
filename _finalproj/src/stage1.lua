@@ -22,8 +22,9 @@ function Stage1:init(player)
         hboxw = 12,
         hboxh = 12,
 
-                -- one heart == 2 health
-        health = 6,
+
+        health = 5,
+        maxhealth = 10,
 
                 -- rendering and collision offset for spaced sprites
         offsetY = 5

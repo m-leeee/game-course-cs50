@@ -18,8 +18,7 @@ end
 
 function Boss:render()
     Entity.render(self)
-    
-    -- love.graphics.setColor(255, 0, 255, 255)
-    -- love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
-    -- love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setFont(gFonts['small'])
+    love.graphics.setColor(1,1,1,1)--(34/255, 34/255, 34/255, 1)
+    love.graphics.printf(self.hppercent*100 .. '%', self.x, self.y-10, 100, 'left')
 end

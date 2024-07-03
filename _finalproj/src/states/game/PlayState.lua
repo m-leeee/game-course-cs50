@@ -17,6 +17,7 @@ function PlayState:init()
 
         -- one heart == 2 health
         health = 6,
+        maxhealth = 7,
 
         -- rendering and collision offset for spaced sprites
         offsetY = 5
