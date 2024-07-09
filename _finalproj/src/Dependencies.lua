@@ -24,6 +24,7 @@ require 'src/stage1'
 require 'src/Boss'
 require 'src/bosses/Shiba'
 
+require 'src/AOE'
 
 gTextures = {
     ['player'] = love.graphics.newImage('graphics/player.png'),

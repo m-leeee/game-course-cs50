@@ -16,6 +16,10 @@ function Entity:init(def)
     self.width = def.width
     self.height = def.height
 
+    self.xhit = self.x + (self.width/2)
+    self.yhit = self.y + (self.height/2)
+
+
     -- drawing offsets for padded sprites
     self.offsetX = def.offsetX or 0
     self.offsetY = def.offsetY or 0
