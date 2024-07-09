@@ -32,6 +32,7 @@ end
 
 
 function Shiba:update(dt)
+        Boss.update(self)
         --Entity.update(self, dt)
 end
 
