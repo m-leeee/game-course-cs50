@@ -1,7 +1,7 @@
 AOE = Class{}
 
 function AOE:init(def)
-    self.shape = 'circle' --circle, box, and donut as options 
+    self.shape = def.shape --'circle', 'box', and 'donut' as options 
     
     --coordinates 
     self.x = def.x
