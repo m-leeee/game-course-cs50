@@ -1,7 +1,7 @@
 Stage1 = Class{}
 
-function Stage1:init(player)
-    self.player = player
+function Stage1:init(def)
+    self.player = def.player
 
     -- container we could use to store rooms in a static dungeon, but unused here
     --self.rooms = {}
@@ -43,10 +43,72 @@ function Stage1:init(player)
     self.boss:changeAnimation('idle')
 
 
+    self.aoe1 = AOE{
+        shape = 'circle', 
+    
+        --coordinates 
+        x = VIRTUAL_WIDTH / 3,
+        y = VIRTUAL_HEIGHT / 3,
+    
+        radius = 10, --circle and donut
+        inradius = 0, --donut only
+        xlength = 0, --box only
+        ylength = 0, --box only
+    
+        damage = 2, --how much damage this AOE will inflict
+        snaptime = 3, -- time telegraph will show/when the snapshot occurs
+        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+        player = self.player
+
+
+    }
+    self.aoe2 = AOE{
+        shape = 'box',
+    
+        --coordinates 
+        x = VIRTUAL_WIDTH / 3,
+        y = VIRTUAL_HEIGHT / 3 + 50,
+    
+        radius = 0, --circle and donut
+        inradius = 0, --donut only
+        xlength = 10, --box only
+        ylength = 10, --box only
+    
+        damage = 2, --how much damage this AOE will inflict
+        snaptime = 3, -- time telegraph will show/when the snapshot occurs
+        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+        player = self.player
+
+
+    }
+
+    self.aoe3 = AOE{
+        shape = 'donut',
+    
+        --coordinates 
+        x = VIRTUAL_WIDTH / 3 + 100,
+        y = VIRTUAL_HEIGHT / 3,
+    
+        radius = 11, --circle and donut
+        inradius = 6, --donut only
+        xlength = 0, --box only
+        ylength = 0, --box only
+    
+        damage = 2, --how much damage this AOE will inflict
+        snaptime = 3, -- time telegraph will show/when the snapshot occurs
+        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+        player = self.player
+
+
+    }
+
 end
 
 function Stage1:update(dt)
     self.boss:update(dt)
+    self.aoe1:update(dt)
+    self.aoe2:update(dt)
+    self.aoe3:update(dt)
 --[[     -- pause updating if we're in the middle of shifting
     if not self.shifting then    
         self.currentRoom:update(dt)
@@ -59,6 +121,9 @@ end
 
 function Stage1:render()
     self.boss:render()
+    self.aoe1:render()
+    self.aoe2:render()
+    self.aoe3:render()
 --[[     -- translate the camera if we're actively shifting
     if self.shifting then
         love.graphics.translate(-math.floor(self.cameraX), -math.floor(self.cameraY))

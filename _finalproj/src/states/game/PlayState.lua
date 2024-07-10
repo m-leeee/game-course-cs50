@@ -10,8 +10,8 @@ function PlayState:init()
         x = VIRTUAL_WIDTH / 2 - 8,
         y = VIRTUAL_HEIGHT / 2 - 11,
         
-        width = 256,
-        height = 256,
+        width = 20,--256,
+        height = 20,--256,
         hboxw = 12,
         hboxh = 12,
 
@@ -23,7 +23,7 @@ function PlayState:init()
         offsetY = 5
     }
 
-    self.stage = Stage1{self.player}
+    self.stage = Stage1{player = self.player}
 
     --self.dungeon = Dungeon(self.player)
     --self.currentRoom = Room(self.player)

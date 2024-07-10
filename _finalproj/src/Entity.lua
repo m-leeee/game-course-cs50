@@ -16,8 +16,8 @@ function Entity:init(def)
     self.width = def.width
     self.height = def.height
 
-    self.xhit = self.x + (self.width/2)
-    self.yhit = self.y + (self.height/2)
+    self.hitx = self.x + (self.width/2)
+    self.hity = self.y + (self.height/2)
 
 
     -- drawing offsets for padded sprites
@@ -103,6 +103,10 @@ function Entity:update(dt)
     end
 
     self.hppercent = self.health / self.maxhealth
+
+
+    self.hitx = self.x + (self.width/2)
+    self.hity = self.y + (self.height/2)
 end
 
 function Entity:processAI(params, dt)
@@ -118,6 +122,7 @@ function Entity:render(adjacentOffsetX, adjacentOffsetY)
     end
 
     self.x, self.y = self.x + (adjacentOffsetX or 0), self.y + (adjacentOffsetY or 0)
+    love.graphics.setColor(255, 255, 255) --reset to white
     self.stateMachine:render()
     love.graphics.setColor(1, 1, 1, 1)
     self.x, self.y = self.x - (adjacentOffsetX or 0), self.y - (adjacentOffsetY or 0)
