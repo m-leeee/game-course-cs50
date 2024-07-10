@@ -22,6 +22,15 @@ function AOE:init(def)
     self.done = false -- check for deletion
 
     self.player = def.player
+
+
+    Timer.after(self.snaptime, function()
+        self.teleactive = false
+        if not self.done then
+            self.snapshot = true
+        end
+        self.done = true
+    end)
 end
 
 
@@ -69,15 +78,19 @@ function AOE:hits(target)
 
 end
 
+
+
 function AOE:update(dt)
-    self.timepast = self.timepast + dt -- !!! WILL WANT TO USE TIMER (This is just a quick implementation for the time being because i dont remember how to use the timer in lib)
-    if self.timepast > self.snaptime then
+    --self.timepast = self.timepast + dt -- !!! WILL WANT TO USE TIMER (This is just a quick implementation for the time being because i dont remember how to use the timer in lib)
+--[[     if self.timepast > self.snaptime then
         self.teleactive = false
         if not self.done then
             self.snapshot = true
         end
         self.done = true
-    end
+    end ]]
+
+
 --[[     if self.timepast > self.snaptime + self.persisttime then -- Another timer implementation in the (near) future.... 
         self.snapshot = false
         self.done = true
