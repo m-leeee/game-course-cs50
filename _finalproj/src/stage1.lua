@@ -103,7 +103,7 @@ function Stage1:init(def)
     }
 
 
-    Timer.every(.1, function() 
+    Timer.every(.1, function() --moving function, might want to update
     self.aoe3.x = self.aoe3.x+1
     end)
 end
