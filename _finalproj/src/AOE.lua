@@ -31,6 +31,7 @@ function AOE:init(def)
         end
         self.done = true
     end)
+    --for persistent AOE, use Timer.every
 end
 
 
