@@ -133,6 +133,8 @@ function Entity:render(adjacentOffsetX, adjacentOffsetY)
         love.graphics.setColor(255, 255, 255, 255) 
         love.graphics.rectangle('line', self.x, self.y, 30, 1)
         love.graphics.setColor(255, 0, 255, 255)
-        love.graphics.rectangle('line', self.x, self.y, self.hppercent*30, 1)
-        love.graphics.setColor(255, 255, 255, 255)
+        if self.health > 0 then
+            love.graphics.rectangle('line', self.x, self.y, self.hppercent*30, 1)
+            love.graphics.setColor(255, 255, 255, 255)
+        end
 end

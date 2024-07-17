@@ -114,6 +114,34 @@ end
 function Stage1:update(dt)
     self.boss:update(dt)
     self.stage:update(dt)
+
+
+    if math.random(100) == 1 then
+                        
+        -- instantiate snail, declaring in advance so we can pass it into state machine
+        local aoespawn
+        aoespawn = AOE{
+            shape = 'circle', 
+        
+            --coordinates 
+            x = self.player.x,
+            y = self.player.y,
+        
+            radius = 20, --circle and donut
+            inradius = 0, --donut only
+            xlength = 0, --box only
+            ylength = 0, --box only
+        
+            damage = 2, --how much damage this AOE will inflict
+            snaptime = 1, -- time telegraph will show/when the snapshot occurs
+            --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+            player = self.player
+    
+        }
+
+        self.stage:addAOE(aoespawn)
+    end
+
     --self.aoe1:update(dt)
     --self.aoe2:update(dt)
     --self.aoe3:update(dt)
