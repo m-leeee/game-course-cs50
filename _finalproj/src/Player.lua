@@ -2,12 +2,25 @@ Player = Class{__includes = Entity}
 
 function Player:init(def)
     Entity.init(self, def)
+    self.gcdspeed = 1.5
+    self.gcdrolled = false
+
+    self.bullets = {}
 end
 
 function Player:update(dt)
     Entity.update(self, dt)
-end
+    
+    for k, bullet in pairs(self.bullets) do
+        bullet:update(dt)
+    end
 
+    for k, bullet in pairs(self.bullets) do
+        if bullet.done then
+            table.remove(self.bullets,k)
+        end
+    end
+end
 
 function Player:collides(target)
     local selfY, selfHeight = self.y + self.height / 2, self.height - self.height / 2
@@ -24,4 +37,8 @@ function Player:render()
      love.graphics.rectangle("fill", self.hitx, self.hity, 1, 1)
     -- love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
     -- love.graphics.setColor(255, 255, 255, 255)
+
+    for k, bullet in pairs(self.bullets) do
+        bullet:render()
+    end
 end

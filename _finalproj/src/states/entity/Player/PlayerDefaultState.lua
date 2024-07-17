@@ -31,6 +31,20 @@ function PlayerDefaultState:update(dt)
         --self.entity:changeState('idle')
     end
 
+    if love.keyboard.isDown('x') then
+        if self.entity.gcdrolled == false then
+            local bullet = PlayerBullet(self.entity)
+    
+            table.insert(self.entity.bullets, bullet)
+
+            self.entity.gcdrolled = true --caps the number of attack actions you can send 
+            Timer.after(self.entity.gcdspeed, function() 
+                self.entity.gcdrolled = false
+            end)
+        end
+    
+    end
+
     --if love.keyboard.wasPressed('space') and (self.entity.holding == false) then
     --    self.entity:changeState('swing-sword')
     --end

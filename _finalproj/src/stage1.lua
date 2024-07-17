@@ -17,8 +17,8 @@ function Stage1:init(def)
         x = VIRTUAL_WIDTH / 2 - 8,
         y = VIRTUAL_HEIGHT / 2 - 11,
                 
-        width = 256,
-        height = 256,
+        width = 30,--256,
+        height = 30,--256,
         hboxw = 12,
         hboxh = 12,
 
@@ -42,7 +42,7 @@ function Stage1:init(def)
     self.boss:changeState('default')
     self.boss:changeAnimation('idle')
 
-    self.stage = Stage{self.player}
+    self.stage = Stage{player = self.player}
     self.aoe1 = AOE{
         shape = 'circle', 
     
@@ -102,6 +102,7 @@ function Stage1:init(def)
 
     }
 
+    self.stage:addEnemy(self.boss)
     self.stage:addAOE(self.aoe1)
     self.stage:addAOE(self.aoe2)
     self.stage:addAOE(self.aoe3)
