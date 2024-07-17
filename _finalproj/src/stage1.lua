@@ -42,7 +42,7 @@ function Stage1:init(def)
     self.boss:changeState('default')
     self.boss:changeAnimation('idle')
 
-
+    self.stage = Stage{self.player}
     self.aoe1 = AOE{
         shape = 'circle', 
     
@@ -102,6 +102,9 @@ function Stage1:init(def)
 
     }
 
+    self.stage:addAOE(self.aoe1)
+    self.stage:addAOE(self.aoe2)
+    self.stage:addAOE(self.aoe3)
 
     Timer.every(.1, function() --moving function, might want to update
     self.aoe3.x = self.aoe3.x+1
@@ -110,9 +113,11 @@ end
 
 function Stage1:update(dt)
     self.boss:update(dt)
-    self.aoe1:update(dt)
-    self.aoe2:update(dt)
-    self.aoe3:update(dt)
+    self.stage:update(dt)
+    --self.aoe1:update(dt)
+    --self.aoe2:update(dt)
+    --self.aoe3:update(dt)
+
 --[[     -- pause updating if we're in the middle of shifting
     if not self.shifting then    
         self.currentRoom:update(dt)
@@ -125,9 +130,11 @@ end
 
 function Stage1:render()
     self.boss:render()
-    self.aoe1:render()
-    self.aoe2:render()
-    self.aoe3:render()
+    self.stage:render()
+    --self.aoe1:render()
+    --self.aoe2:render()
+    --self.aoe3:render()
+
 --[[     -- translate the camera if we're actively shifting
     if self.shifting then
         love.graphics.translate(-math.floor(self.cameraX), -math.floor(self.cameraY))

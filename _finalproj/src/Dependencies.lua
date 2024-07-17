@@ -20,6 +20,7 @@ require 'src/Player'
 require 'src/states/entity/EntityIdleState'
 require 'src/states/entity/player/PlayerDefaultState'
 
+require 'src/Stage'
 require 'src/stage1'
 require 'src/Boss'
 require 'src/bosses/Shiba'
