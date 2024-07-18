@@ -34,7 +34,7 @@ Special actions that work differently than other 3 base actions in execution. Th
 For Charge VS Cast scaling, Charge actions should mimic exponential growth in damage value, whereas Cast should be more linear. Thus, Charge playstyles will highly reward being able to stand still for a very long time, whereas Cast should reward players who are willing to plan around the set duration. For example, on a 2 second Cast, the Charge equivalent should overtake the Cast's damage/time gain at, say, 5 seconds, and progressively reward Charge even more in damage/time value if the player were able to hit 6+ seconds. Of course, Charge actions would need to have a cap as well (such that its not necessarily an infinitely growing gain). 
 
 ## Buffs/Debuffs
-These describe status effects that can be inflicted on the Player (and likely on the boss as well).
+These describe status effects that can be inflicted on the Player (and likely on the boss as well). Debuffs will likely be inflicted on players via AOEs or other stage based triggers, while Player buffs will likely be available as oGCDs. 
 
 ### Buffs
 * Regen: Some HP recovered at fixed game ticks 
