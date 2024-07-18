@@ -107,6 +107,10 @@ function Entity:update(dt)
 
     self.hitx = self.x + (self.width/2)
     self.hity = self.y + (self.height/2)
+     
+    if self.health < 0 then
+        self.dead = true
+    end
 end
 
 function Entity:processAI(params, dt)

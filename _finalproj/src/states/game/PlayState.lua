@@ -23,7 +23,7 @@ function PlayState:init()
         offsetY = 5
     }
 
-    self.stage = Stage1{player = self.player}
+    self.stage = Sandbox{player = self.player}
 
     --self.dungeon = Dungeon(self.player)
     --self.currentRoom = Room(self.player)

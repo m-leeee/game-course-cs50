@@ -9,15 +9,9 @@ Stage = Class{}
 function Stage:init(def)
     self.player = def.player
 
-    -- container we could use to store rooms in a static dungeon, but unused here
-    --self.rooms = {}
-
-    -- current room we're operating in
-    --self.currentRoom = Room(self.player)    
-
 
     self.AOEs = {} --table to hold and manage all active AOEs
-    self.enemies = {} --table to hold an manage all active enemies 
+    self.enemies = {} --table to hold and manage all active enemies 
 
 
 
@@ -48,11 +42,11 @@ function Stage:update(dt)
     end
     self:cleanAOElist()
 
---[[     for k, mob in pairs(self.enemies) do
+    for k, mob in pairs(self.enemies) do
         mob:update(dt)
-    end ]]
+    end
     --clean enemy list when implemented as well
-    --currently stage1 handles render/update logic for boss - this needs to be updated later. 
+    --if boss.dead == true, then can clean from EnemyList, but may want to implement an animation and clear it after the animation is done 
 
 
     for b, bullet in pairs(self.player.bullets) do
@@ -74,9 +68,9 @@ function Stage:render()
 --[[         love.graphics.setColor(255, 0, 255, 255) --tests cleanAOElist
         love.graphics.printf(k, 1, 10*k, 100, 'center') ]]
     end
---[[     for k, mob in pairs(self.enemies) do
+    for k, mob in pairs(self.enemies) do
         mob:render()
-    end ]]
+    end
 
 end
 
