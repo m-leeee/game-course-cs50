@@ -54,16 +54,16 @@ function Stage:update(dt)
     --clean enemy list when implemented as well
     --currently stage1 handles render/update logic for boss - this needs to be updated later. 
 
-    --if self.player:getbulletcount() > 0 then
-        for b, bullet in pairs(self.player.bullets) do
-            for m, mob in pairs(self.enemies) do
-                if bullet:collides(mob) then
-                    mob.health = mob.health - 1
-                    bullet.done = true
-                end
+
+    for b, bullet in pairs(self.player.bullets) do
+        for m, mob in pairs(self.enemies) do
+            if bullet:collides(mob) then
+                mob.health = mob.health - 1
+                bullet.done = true
             end
         end
-    --end
+    end
+
 end
 
 function Stage:render()
