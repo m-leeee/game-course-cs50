@@ -1,4 +1,4 @@
-## Player battle system and Attack Types
+## Player battle system and Attack types
 Players will recieve choices of attack styles to equip. Currently unsure of the way I'd like to present these choices (such as via different Characters with set loadouts, or allowing players to mix and match slots to their own choosing). Regardless of how these choices ultimately get presented to the player, I would like to follow a design balance that favors higher reward for actions that require higher risk and/or skill.
 
 Terms to know: 
@@ -31,7 +31,7 @@ Special actions that work differently than other 3 base actions in execution. Th
     * Buff that increases damage of next attack by set amount 
 * CastLock - Attack that locks the player in cast, disabling actions and movements until the entire duration is completed (or the player dies). Essentially a cast you cannot cancel and are forced to finish. This attack should have massive damage and outscale both Cast and Charge in value reward. 
 
-For Charge VS Cast scaling, Charge actions should mimic exponential growth in damage/value, whereas Cast should be more linear. Thus, Charge playstyles will highly reward being able to stand still for a very long time, whereas Cast should reward players who are willing to plan around the set duration. For example, on a 2 second Cast, the Charge equivalent should overtake the Cast's damage/time gain at, say, 5 seconds, and progressively reward Charge even more in damage/time value if the player were able to hit 6+ seconds. Of course, Charge actions would need to have a cap as well. 
+For Charge VS Cast scaling, Charge actions should mimic exponential growth in damage value, whereas Cast should be more linear. Thus, Charge playstyles will highly reward being able to stand still for a very long time, whereas Cast should reward players who are willing to plan around the set duration. For example, on a 2 second Cast, the Charge equivalent should overtake the Cast's damage/time gain at, say, 5 seconds, and progressively reward Charge even more in damage/time value if the player were able to hit 6+ seconds. Of course, Charge actions would need to have a cap as well (such that its not necessarily an infinitely growing gain). 
 
 ## Buffs/Debuffs
 These describe status effects that can be inflicted on the Player (and likely on the boss as well).
