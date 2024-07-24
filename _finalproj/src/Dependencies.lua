@@ -21,6 +21,7 @@ require 'src/states/entity/EntityIdleState'
 require 'src/states/entity/player/PlayerDefaultState'
 
 require 'src/PlayerBullet'
+require 'src/BossBullet'
 require 'src/Sandbox'
 require 'src/Stage'
 require 'src/Stage1'

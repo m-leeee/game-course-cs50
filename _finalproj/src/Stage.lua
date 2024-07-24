@@ -58,6 +58,12 @@ function Stage:update(dt)
         end
     end
 
+    for m, mob in pairs(self.enemies) do
+        for b, bullet in pairs(mob.bullets) do
+            bullet:collides(self.player)
+        end
+    end
+
 end
 
 function Stage:render()

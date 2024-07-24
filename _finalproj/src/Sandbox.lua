@@ -120,6 +120,43 @@ function Sandbox:init(def)
 
     }
 
+    self.bullet1 = BossBullet{
+        boss = self.boss,
+        --self.dungeon = dungeon 
+        degree = 0, -- direction of the bullet, 0 assumes +Y directionality, 90 assumes -X, -180 to 180
+        radius = 2,
+        damage = 1,
+
+        --self.traveled = 0 --for projectiles with a limit 
+        speed = 10
+
+    }
+    self.bullet2 = BossBullet{
+        boss = self.boss,
+        --self.dungeon = dungeon 
+        degree = 90, -- direction of the bullet, 0 assumes +Y directionality, 90 assumes -X, -180 to 180
+        radius = 2,
+        damage = 1,
+
+        --self.traveled = 0 --for projectiles with a limit 
+        speed = 10
+
+    }
+    self.bullet3 = BossBullet{
+        boss = self.boss,
+        --self.dungeon = dungeon 
+        degree = -180, -- direction of the bullet, 0 assumes +Y directionality, 90 assumes -X, -180 to 180
+        radius = 2,
+        damage = 1,
+
+        --self.traveled = 0 --for projectiles with a limit 
+        speed = 10
+
+    }
+    --table.insert(self.boss.bullets, self.bullet1)
+    self.boss:addBullet(self.bullet1)
+    self.boss:addBullet(self.bullet2)
+    self.boss:addBullet(self.bullet3)
     self.stage:addEnemy(self.boss)
     --self.stage:addAOE(self.aoe1)
     --self.stage:addAOE(self.aoe2)
