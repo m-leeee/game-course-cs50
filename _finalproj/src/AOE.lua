@@ -1,7 +1,7 @@
 AOE = Class{}
 
 function AOE:init(def)
-    self.shape = def.shape --'circle', 'box', and 'donut' as options 
+    self.shape = def.shape --'circle', 'box','donut', and 'triangle' as options 
     
     --coordinates 
     self.x = def.x
@@ -11,6 +11,10 @@ function AOE:init(def)
     self.inradius = def.inradius --donut only
     self.xlength = def.xlength --box only
     self.ylength = def.ylength --box only
+    self.x2 = def.x2 --triangle only
+    self.y2 = def.y2 --triangle only   
+    self.x3 = def.x3 --triangle only
+    self.y3 = def.y3 --triangle only
 
     self.damage = def.damage --how much damage this AOE will inflict
     self.teleactive = true --is the telegraph visual active
@@ -74,7 +78,26 @@ function AOE:hits(target)
                 return true -- ir radius < distance, then true
             end
         end
+
+        if self.shape == 'triangle' then
+
+            --calculate AOE triangle area
+            local tri0 = self.x*(self.y2-self.y3) + self.x2*(self.y3-self.y) + self.x3*(self.y-self.y2)
+            --calculate area of 3 triangles forming vertices with target hitbox and 2 of the original AOE vertices
+            local thx = target.hitx
+            local thy = target.hity
+            local tri1 = thx*(self.y2-self.y3) + self.x2*(self.y3-thy) + self.x3*(thy-self.y2) --replacing x y 
+            local tri2 = self.x*(thy-self.y3) + thx*(self.y3-self.y) + self.x3*(self.y-thy) --replacing x2 y2
+            local tri3 = self.x*(self.y2-thy) + self.x2*(thy-self.y) + thx*(self.y-self.y2) --replacing x3 y3
+            --if these two are equal, then the hitbox  is in the AOE 
+            if math.abs(tri0) >= math.abs(tri1)+math.abs(tri2)+math.abs(tri3) then
+                target.health = target.health - self.damage
+                self.snapshot= false
+                return true
+            end
+        end
     end
+
     return false
 
 end
@@ -123,6 +146,11 @@ function AOE:render()
             love.graphics.setColor(0, 0, 0, 225)
             love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.inradius)
         end
+
+        if self.shape == 'triangle' then
+            love.graphics.polygon("fill", self.x,self.y, self.x2,self.y2, self.x3,self.y3 )
+        end
+
     end
 
 end

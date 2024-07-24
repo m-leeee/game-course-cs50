@@ -96,11 +96,35 @@ function Sandbox:init(def)
 
 
     }
+    self.aoe4 = AOE{
+        shape = 'triangle', 
+    
+        --coordinates 
+        x = 150,
+        y = 50,
+    
+        radius = 10, --circle and donut
+        inradius = 0, --donut only
+        xlength = 0, --box only
+        ylength = 0, --box only
+        x2 = 170, --triangle only
+        y2 = 171, --triangle only   
+        x3 = 130, --triangle only
+        y3 = 180, --triangle only
+    
+        damage = 2, --how much damage this AOE will inflict
+        snaptime = 3, -- time telegraph will show/when the snapshot occurs
+        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+        player = self.player
+
+
+    }
 
     self.stage:addEnemy(self.boss)
-    self.stage:addAOE(self.aoe1)
-    self.stage:addAOE(self.aoe2)
-    self.stage:addAOE(self.aoe3)
+    --self.stage:addAOE(self.aoe1)
+    --self.stage:addAOE(self.aoe2)
+    --self.stage:addAOE(self.aoe3)
+    self.stage:addAOE(self.aoe4)
 
     Timer.every(.1, function() --moving function, might want to update
     self.aoe3.x = self.aoe3.x+1
@@ -111,7 +135,7 @@ function Sandbox:update(dt)
     self.stage:update(dt)
 
 
-    if math.random(100) == 1 then
+    if math.random(100) == 102 then
                         
         -- instantiate snail, declaring in advance so we can pass it into state machine
         local aoespawn
