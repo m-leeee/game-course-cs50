@@ -40,304 +40,197 @@ function Stage1:init(def)
     
     self.stage:addEnemy(self.boss)
 
+    self.mechanictimer = 0
+    self.mech2bombcounter = 1
+
 end
 
-function Stage1:update(dt)
-    self.stage:update(dt)
---TODO: phase changes 
-    if self.boss.phase == 1 then --TENNIS BALLS BARRAGE
+function Stage1:mech1()
+    --TENNIS BALL BARRAGE 
+    if self.mechanictimer > 1 then
+        local bullet1= BossBullet{
+            boss = self.boss,
 
-        Timer.every(1, function()
-            local bullet1= BossBullet{
-                boss = self.boss,
-    
-                degree = 0,
-                radius = 5,
-                damage = 1,
-        
-    
-                speed = 40
-            }
-            local bullet2= BossBullet{
-                boss = self.boss,
-    
-                degree = 45,
-                radius = 5,
-                damage = 1,
-        
-                speed = 40
-            }
-            local bullet3= BossBullet{
-                boss = self.boss,
-    
-                degree = 90,
-                radius = 5,
-                damage = 1,
-        
-    
-                speed = 40
-            }
-            local bullet4= BossBullet{
-                boss = self.boss,
-    
-                degree = 135,
-                radius = 5,
-                damage = 1,
-        
-    
-                speed = 40
-            }
-            local bullet5= BossBullet{
-                boss = self.boss,
-    
-                degree = 180,
-                radius = 5,
-                damage = 1,
-        
-                speed = 40
-            }
-            local bullet6= BossBullet{
-                boss = self.boss,
-    
-                degree = -45,
-                radius = 5,
-                damage = 1,
-        
-    
-                speed = 40
-            }
-            local bullet7= BossBullet{
-                boss = self.boss,
-    
-                degree = -90,
-                radius = 5,
-                damage = 1,
-        
-                speed = 40
-            }
-            local bullet8= BossBullet{
-                boss = self.boss,
-    
-                degree = -135,
-                radius = 5,
-                damage = 1,
-        
-    
-                speed = 40
-            }
-    
-            self.boss:addBullet(bullet1)
-            self.boss:addBullet(bullet2)
-            self.boss:addBullet(bullet3)
-            self.boss:addBullet(bullet4)
-            self.boss:addBullet(bullet5)
-            self.boss:addBullet(bullet6)
-            self.boss:addBullet(bullet7)
-            self.boss:addBullet(bullet8)
-    
-        end)
+            degree = 0,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet2= BossBullet{
+            boss = self.boss,
 
-        
+            degree = 45,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet3= BossBullet{
+            boss = self.boss,
+
+            degree = 90,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet4= BossBullet{
+            boss = self.boss,
+
+            degree = 135,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet5= BossBullet{
+            boss = self.boss,
+
+            degree = 180,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet6= BossBullet{
+            boss = self.boss,
+
+            degree = -45,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet7= BossBullet{
+            boss = self.boss,
+
+            degree = -90,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+        local bullet8= BossBullet{
+            boss = self.boss,
+
+            degree = -135,
+            radius = 5,
+            damage = 1,
+            speed = 40
+        }
+
+        self.boss:addBullet(bullet1)
+        self.boss:addBullet(bullet2)
+        self.boss:addBullet(bullet3)
+        self.boss:addBullet(bullet4)
+        self.boss:addBullet(bullet5)
+        self.boss:addBullet(bullet6)
+        self.boss:addBullet(bullet7)
+        self.boss:addBullet(bullet8)
+
+        self.mechanictimer = 0
     end
-    if self.boss.phase == 2 then --TRAFFIC FIXME:
-        Timer.every(.5, function()
-            local aoe1= AOE{
-                shape = 'box',
-            
-                --coordinates 
-                x = 0,
-                y = 0,
-            
-                radius = 0, --circle and donut
-                inradius = 0, --donut only
-                xlength = VIRTUAL_WIDTH, --box only
-                ylength = VIRTUAL_HEIGHT/5, --box only
-            
-                damage = 5, --how much damage this AOE will inflict
-                snaptime = .5, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
-        
-        
-            }
-            self.stage:addAOE(aoe1)
-        end)
+end
 
-        Timer.every(.5, function()
-            local aoe1= AOE{
-                shape = 'box',
-            
-                --coordinates 
-                x = 0,
-                y = 0,
-            
-                radius = 0, --circle and donut
-                inradius = 0, --donut only
-                xlength = VIRTUAL_WIDTH, --box only
-                ylength = VIRTUAL_HEIGHT/5, --box only
-            
-                damage = 5, --how much damage this AOE will inflict
-                snaptime = .5, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
-        
-        
-            }
-            self.stage:addAOE(aoe1)
-        end)
-
-        Timer.every(.5, function()
-            local aoe1= AOE{
-                shape = 'box',
-            
-                --coordinates 
-                x = 0,
-                y = 0,
-            
-                radius = 0, --circle and donut
-                inradius = 0, --donut only
-                xlength = VIRTUAL_WIDTH, --box only
-                ylength = VIRTUAL_HEIGHT/5, --box only
-            
-                damage = 5, --how much damage this AOE will inflict
-                snaptime = .5, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
-        
-        
-            }
+function Stage1:mech2() --FIXME:
+    --TRAFFIC
+    local aoe1= AOE{
+        shape = 'box',
     
-            self.stage:addAOE(aoe1)
-        end)
-
-        Timer.every(.5, function()
-            local aoe1= AOE{
-                shape = 'box',
-            
-                --coordinates 
-                x = 0,
-                y = 0,
-            
-                radius = 0, --circle and donut
-                inradius = 0, --donut only
-                xlength = VIRTUAL_WIDTH, --box only
-                ylength = VIRTUAL_HEIGHT/5, --box only
-            
-                damage = 5, --how much damage this AOE will inflict
-                snaptime = .5, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
-        
-        
-            }
+        --coordinates 
+        x = 0,
+        y = 0,
     
-        end)
-
-        Timer.every(.5, function()
-            local aoe1= AOE{
-                shape = 'box',
-            
-                --coordinates 
-                x = 0,
-                y = 0,
-            
-                radius = 0, --circle and donut
-                inradius = 0, --donut only
-                xlength = VIRTUAL_WIDTH, --box only
-                ylength = VIRTUAL_HEIGHT/5, --box only
-            
-                damage = 5, --how much damage this AOE will inflict
-                snaptime = .5, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
-        
-        
-            }
+        radius = 0, --circle and donut
+        inradius = 0, --donut only
+        xlength = VIRTUAL_WIDTH, --box only
+        ylength = VIRTUAL_HEIGHT/5, --box only
     
-        end)
+        damage = 5, --how much damage this AOE will inflict
+        snaptime = .5, -- time telegraph will show/when the snapshot occurs
+        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+        player = self.player
 
-    end
-    if self.boss.phase == 3 then --BOMB TOSS
-        Timer.after(2, function()
-            local aoe1= AOE{
-                shape = 'circle',
-            
-                --coordinates 
-                x = self.player.hitx,
-                y = self.player.hity,
-            
-                radius = 15, --circle and donut
-            
-                damage = 3, --how much damage this AOE will inflict
-                snaptime = 1, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
+
+    }
+    self.stage:addAOE(aoe1)
+end
+
+function Stage1:mech3()
+    --FRISBEE BOMB TOSS
+    if self.mechanictimer > 2 and self.mech2bombcounter <=2 then
+        local aoe1= AOE{
+            shape = 'circle',
         
+            --coordinates 
+            x = self.player.hitx,
+            y = self.player.hity,
         
-            }
-            self.stage:addAOE(aoe1)
-        end)
-        Timer.after(4, function()
-            local aoe1= AOE{
-                shape = 'circle',
-            
-                --coordinates 
-                x = self.player.hitx,
-                y = self.player.hity,
-            
-                radius = 15, --circle and donut
-            
-                damage = 3, --how much damage this AOE will inflict
-                snaptime = 1, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
+            radius = 15, --circle and donut
         
+            damage = 3, --how much damage this AOE will inflict
+            snaptime = 1, -- time telegraph will show/when the snapshot occurs
+            player = self.player
+
+
+        }
+        self.stage:addAOE(aoe1)
+        self.mech2bombcounter = self.mech2bombcounter + 1
+        self.mechanictimer = 0
+    elseif self.mechanictimer > 2 and self.mech2bombcounter == 3 then
+        local aoe1= AOE{
+            shape = 'circle',
         
-            }
-            self.stage:addAOE(aoe1)
-        end)
-        Timer.after(6, function()
-            local aoe1= AOE{
-                shape = 'circle',
-            
-                --coordinates 
-                x = self.player.hitx,
-                y = self.player.hity,
-            
-                radius = 15, --circle and donut
-            
-                damage = 3, --how much damage this AOE will inflict
-                snaptime = 1, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-                player = self.player
+            --coordinates 
+            x = self.player.hitx,
+            y = self.player.hity,
         
+            radius = 15, --circle and donut
         
-            }
-            self.stage:addAOE(aoe1)
-        end)
-        Timer.after(7, function()
-            local aoe1= AOE{
+            damage = 3, --how much damage this AOE will inflict
+            snaptime = 1, -- time telegraph will show/when the snapshot occurs
+            player = self.player
+
+        }
+        self.stage:addAOE(aoe1)
+        
+        Timer.after(1, function()
+            local aoe2 = AOE{
                 shape = 'donut',
             
                 --coordinates 
                 x = self.player.hitx,
                 y = self.player.hity,
             
-                radius = 40, --circle and donut
+                radius = 30, --circle and donut
                 inradius = 15, --donut only
             
                 damage = 3, --how much damage this AOE will inflict
                 snaptime = 1, -- time telegraph will show/when the snapshot occurs
-                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
                 player = self.player
-        
-        
             }
-            self.stage:addAOE(aoe1)
+            self.stage:addAOE(aoe2)
         end)
+        
+        self.mech2bombcounter = 1
+        self.mechanictimer = 0
     end
-    if self.boss.phase == 4 then --DUSTSTORM
-    --TODO:
+
+
+end
+
+function Stage1:mech4()
+    --SANDSTORM 
+end
+
+
+
+function Stage1:update(dt)
+    self.stage:update(dt)
+    self.mechanictimer = self.mechanictimer + dt
+--TODO: phase changes 
+    if self.boss.phase == 1 then --TENNIS BALLS BARRAGE
+        Stage1:mech1()
+    elseif self.boss.phase == 2 then --TRAFFIC
+        Stage1:mech2()
+    elseif self.boss.phase == 3 then --BOMB TOSS
+        Stage1:mech3()
+    elseif self.boss.phase == 4 then --DUSTSTORM
+        Stage1:mech4()
     end
 
 
