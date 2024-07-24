@@ -17,8 +17,8 @@ function Stage1:init(def)
         hboxh = 12,
 
 
-        health = 10,
-        maxhealth = 10,
+        health = 60,
+        maxhealth = 60,
 
                 -- rendering and collision offset for spaced sprites
         offsetY = 5
@@ -44,6 +44,110 @@ end
 
 function Stage1:update(dt)
     self.stage:update(dt)
+
+    if self.boss.phase == 1 then
+
+        Timer.every(2, function()
+            local bullet1= BossBullet{
+                boss = self.boss,
+    
+                degree = 0,
+                radius = 5,
+                damage = 1,
+        
+    
+                speed = 40
+            }
+            local bullet2= BossBullet{
+                boss = self.boss,
+    
+                degree = 45,
+                radius = 5,
+                damage = 1,
+        
+                speed = 40
+            }
+            local bullet3= BossBullet{
+                boss = self.boss,
+    
+                degree = 90,
+                radius = 5,
+                damage = 1,
+        
+    
+                speed = 40
+            }
+            local bullet4= BossBullet{
+                boss = self.boss,
+    
+                degree = 135,
+                radius = 5,
+                damage = 1,
+        
+    
+                speed = 40
+            }
+            local bullet5= BossBullet{
+                boss = self.boss,
+    
+                degree = 180,
+                radius = 5,
+                damage = 1,
+        
+                speed = 40
+            }
+            local bullet6= BossBullet{
+                boss = self.boss,
+    
+                degree = -45,
+                radius = 5,
+                damage = 1,
+        
+    
+                speed = 40
+            }
+            local bullet7= BossBullet{
+                boss = self.boss,
+    
+                degree = -90,
+                radius = 5,
+                damage = 1,
+        
+                speed = 40
+            }
+            local bullet8= BossBullet{
+                boss = self.boss,
+    
+                degree = -135,
+                radius = 5,
+                damage = 1,
+        
+    
+                speed = 40
+            }
+    
+            self.boss:addBullet(bullet1)
+            self.boss:addBullet(bullet2)
+            self.boss:addBullet(bullet3)
+            self.boss:addBullet(bullet4)
+            self.boss:addBullet(bullet5)
+            self.boss:addBullet(bullet6)
+            self.boss:addBullet(bullet7)
+            self.boss:addBullet(bullet8)
+    
+        end)
+
+        
+    end
+    if self.boss.phase == 2 then
+    end
+    if self.boss.phase == 3 then
+    end
+    if self.boss.phase == 4 then
+    end
+    if self.boss.phase == 5 then
+    end
+
 
     -- generate AOEs & projectiles depending on the phase and mechanics, then load them into Stage's appropriate tables 
 
