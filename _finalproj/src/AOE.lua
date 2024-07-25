@@ -45,8 +45,8 @@ function AOE:hits(target)
     if self.snapshot then
         if self.shape == 'circle' then
             --distance equation from player coordinate
-            local centerx = self.x + self.radius
-            local centery = self.y + self.radius
+            local centerx = self.x
+            local centery = self.y
             if ((target.hitx - centerx)^2 + (target.hity - centery)^2)^(1/2) < self.radius then
                 target.health = target.health - self.damage
                 self.snapshot= false
@@ -65,8 +65,8 @@ function AOE:hits(target)
         end
 
         if self.shape == 'donut' then
-            local centerx = self.x + self.radius
-            local centery = self.y + self.radius
+            local centerx = self.x
+            local centery = self.y
             --check if inside the donut hole
             if ((target.hitx - centerx)^2 + (target.hity - centery)^2)^(1/2) < self.inradius then
                 return false --if inside inradius, then false
@@ -133,7 +133,7 @@ function AOE:render()
         love.graphics.setColor(255, 100, 0, 200)
 
         if self.shape == 'circle' then
-            love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.radius)
+            love.graphics.circle("fill", self.x, self.y, self.radius)
         end
 
         if self.shape == 'box' then
@@ -142,9 +142,9 @@ function AOE:render()
 
         if self.shape == 'donut' then
             --not sure if this is gonna look right with the built in love2d graphics tools but this will be addressed later if so with real assets or something idk
-            love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.radius)
+            love.graphics.circle("fill", self.x, self.y, self.radius)
             love.graphics.setColor(0, 0, 0, 225)
-            love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.inradius)
+            love.graphics.circle("fill", self.x, self.y, self.inradius)
         end
 
         if self.shape == 'triangle' then

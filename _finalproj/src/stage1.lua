@@ -151,9 +151,9 @@ function Stage1:mech2() --FIXME:
     self.stage:addAOE(aoe1)
 end
 
-function Stage1:mech3() --FIXME:
+function Stage1:mech3()
     --FRISBEE BOMB TOSS
-    if self.mechanictimer > 2 and self.mech3counter <=2 then
+    if self.mechanictimer > 1.3 and self.mech3counter <=2 then
         local aoe1= AOE{
             shape = 'circle',
         
@@ -166,19 +166,20 @@ function Stage1:mech3() --FIXME:
             damage = 3, --how much damage this AOE will inflict
             snaptime = 1, -- time telegraph will show/when the snapshot occurs
             player = self.player
-
 
         }
         self.stage:addAOE(aoe1)
         self.mech3counter = self.mech3counter + 1
         self.mechanictimer = 0
-    elseif self.mechanictimer > 2 and self.mech3counter == 3 then
+    elseif self.mechanictimer > 1.3 and self.mech3counter == 3 then
+        local xx = self.player.hitx
+        local yy = self.player.hity
         local aoe1= AOE{
             shape = 'circle',
         
             --coordinates 
-            x = self.player.hitx,
-            y = self.player.hity,
+            x = xx,
+            y = yy,
         
             radius = 20, --circle and donut
         
@@ -188,17 +189,18 @@ function Stage1:mech3() --FIXME:
 
         }
         self.stage:addAOE(aoe1)
-        
+        self.mech3counter = self.mech3counter + 1
+
         Timer.after(1, function()
             local aoe2 = AOE{
                 shape = 'donut',
             
                 --coordinates 
-                x = self.player.hitx,
-                y = self.player.hity,
+                x = xx,
+                y = yy,
             
-                radius = 60, --circle and donut
-                inradius = 20, --donut only
+                radius = 130, --circle and donut
+                inradius = 19.5, --donut only
             
                 damage = 3, --how much damage this AOE will inflict
                 snaptime = 1, -- time telegraph will show/when the snapshot occurs
@@ -206,9 +208,13 @@ function Stage1:mech3() --FIXME:
             }
             self.stage:addAOE(aoe2)
         end)
+
+        Timer.after(2, function()
+            self.mech3counter = 1
+            self.mechanictimer = 0
+        end)
         
-        self.mech3counter = 1
-        self.mechanictimer = 0
+
     end
 
 
