@@ -19,6 +19,7 @@ require 'src/Player'
 
 require 'src/states/entity/EntityIdleState'
 require 'src/states/entity/player/PlayerDefaultState'
+require 'src/states/entity/player/PlayerKnockbackState'
 
 require 'src/PlayerBullet'
 require 'src/BossBullet'
@@ -29,6 +30,7 @@ require 'src/Boss'
 require 'src/bosses/Shiba'
 
 require 'src/AOE'
+require 'src/AOEwithEffect'
 
 gTextures = {
     ['player'] = love.graphics.newImage('graphics/player.png'),

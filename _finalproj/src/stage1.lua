@@ -41,6 +41,7 @@ function Stage1:init(def)
     self.stage:addEnemy(self.boss)
 
     self.mech1counter = 1
+    self.mech2counter = 1
     self.mech3counter = 1
     self.mech4counter = 1
 
@@ -135,26 +136,33 @@ end
 
 function Stage1:mech2() --FIXME:TODO:
     --TRAFFIC
-    local aoe1= AOE{
-        shape = 'box',
-    
-        --coordinates 
-        x = 0,
-        y = 0,
-    
-        radius = 0, --circle and donut
-        inradius = 0, --donut only
-        xlength = VIRTUAL_WIDTH, --box only
-        ylength = VIRTUAL_HEIGHT/5, --box only
-    
-        damage = 5, --how much damage this AOE will inflict
-        snaptime = .5, -- time telegraph will show/when the snapshot occurs
-        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-        player = self.player
+    if self.mech2counter ==1 then
+        self.mech2counter = self.mech2counter+1
+        local aoe1= AOEwithEffect{
+            shape = 'box',
+        
+            --coordinates 
+            x = 0,
+            y = 0,
+        
+            radius = 0, --circle and donut
+            inradius = 0, --donut only
+            xlength = VIRTUAL_WIDTH, --box only
+            ylength = VIRTUAL_HEIGHT/5, --box only
+        
+            damage = 5, --how much damage this AOE will inflict
+            snaptime = 2, -- time telegraph will show/when the snapshot occurs
+            --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+            player = self.player,
 
+            effect = 'knockback', --'knockback', debuff name 
+            degree = -45, --direction for knockback
+            duration = .1 -- effect duration if applicable
 
-    }
-    self.stage:addAOE(aoe1)
+        }
+        
+        self.stage:addAOE(aoe1)
+    end
 end
 
 function Stage1:mech3()
@@ -354,7 +362,7 @@ end
 function Stage1:update(dt)
     self.stage:update(dt)
     --TODO: phase changes 
-    self.boss.phase = 5 
+    self.boss.phase = 2
     if self.boss.phase == 1 then --TENNIS BALLS BARRAGE
         self:mech1()
     elseif self.boss.phase == 2 then --TRAFFIC
