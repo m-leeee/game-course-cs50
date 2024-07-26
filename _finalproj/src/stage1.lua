@@ -133,7 +133,7 @@ function Stage1:mech1()
 
 end
 
-function Stage1:mech2() --FIXME:
+function Stage1:mech2() --FIXME:TODO:
     --TRAFFIC
     local aoe1= AOE{
         shape = 'box',
@@ -353,8 +353,8 @@ end
 
 function Stage1:update(dt)
     self.stage:update(dt)
---TODO: phase changes 
-    self.boss.phase = 5 --TODO:FIXME:
+    --TODO: phase changes 
+    self.boss.phase = 5 
     if self.boss.phase == 1 then --TENNIS BALLS BARRAGE
         self:mech1()
     elseif self.boss.phase == 2 then --TRAFFIC
@@ -365,36 +365,7 @@ function Stage1:update(dt)
         self:mech4()
     elseif self.boss.phase == 5 then --DUSTSTORM
         self:mech1()
-        self:mech4()
-    end
-
-
-    -- generate AOEs & projectiles depending on the phase and mechanics, then load them into Stage's appropriate tables 
-
-    if math.random(100) == 101 then
-                        
-        -- instantiate snail, declaring in advance so we can pass it into state machine
-        local aoespawn
-        aoespawn = AOE{
-            shape = 'circle', 
-        
-            --coordinates 
-            x = self.player.x,
-            y = self.player.y,
-        
-            radius = 20, --circle and donut
-            inradius = 0, --donut only
-            xlength = 0, --box only
-            ylength = 0, --box only
-        
-            damage = 2, --how much damage this AOE will inflict
-            snaptime = 1, -- time telegraph will show/when the snapshot occurs
-            --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-            player = self.player
-    
-        }
-
-        self.stage:addAOE(aoespawn)
+        self:mech3()
     end
 
 
