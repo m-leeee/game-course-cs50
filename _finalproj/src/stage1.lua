@@ -134,9 +134,9 @@ function Stage1:mech1()
 
 end
 
-function Stage1:mech2() --FIXME:TODO:
+function Stage1:mech2()
     --TRAFFIC
-    local r = math.random(1,3)
+    local r = math.random(1,5)
     local t
     if r == 1 then
         t = {.5,1,.5,.5,1}
@@ -144,6 +144,11 @@ function Stage1:mech2() --FIXME:TODO:
         t = {1,.5,1,.5,.5}
     elseif r == 3 then
         t = {1,.5,1,1,.5}
+    elseif r == 4 then
+        t = {.5,1,.5,1,.5}
+    elseif r == 5 then
+        t = {.5,.5,1,1,.5}
+
     end
     if self.mech2counter ==1 then
         self.mech2counter = self.mech2counter+1
