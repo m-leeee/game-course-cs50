@@ -136,32 +136,145 @@ end
 
 function Stage1:mech2() --FIXME:TODO:
     --TRAFFIC
+    local r = math.random(1,3)
+    local t
+    if r == 1 then
+        t = {.5,1,.5,.5,1}
+    elseif r == 2 then
+        t = {1,.5,1,.5,.5}
+    elseif r == 3 then
+        t = {1,.5,1,1,.5}
+    end
     if self.mech2counter ==1 then
         self.mech2counter = self.mech2counter+1
-        local aoe1= AOEwithEffect{
-            shape = 'box',
-        
-            --coordinates 
-            x = 0,
-            y = 0,
-        
-            radius = 0, --circle and donut
-            inradius = 0, --donut only
-            xlength = VIRTUAL_WIDTH, --box only
-            ylength = VIRTUAL_HEIGHT/5, --box only
-        
-            damage = 5, --how much damage this AOE will inflict
-            snaptime = 2, -- time telegraph will show/when the snapshot occurs
-            --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
-            player = self.player,
+        Timer.after(t[1], function()
+            local aoe1= AOEwithEffect{
+                shape = 'box',
+            
+                --coordinates 
+                x = 0,
+                y = 0,
+            
+                radius = 0, --circle and donut
+                inradius = 0, --donut only
+                xlength = VIRTUAL_WIDTH, --box only
+                ylength = VIRTUAL_HEIGHT/5, --box only
+            
+                damage = 5, --how much damage this AOE will inflict
+                snaptime = 1.5, -- time telegraph will show/when the snapshot occurs
+                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+                player = self.player,
+    
+                effect = 'knockback', --'knockback', debuff name 
+                degree = -90, --direction for knockback
+                duration = .5 -- effect duration if applicable
+    
+            }
+            self.stage:addAOE(aoe1)
+        end)
+        Timer.after(t[2], function()
+            local aoe1= AOEwithEffect{
+                shape = 'box',
+            
+                --coordinates 
+                x = 0,
+                y = VIRTUAL_HEIGHT/5,
+            
+                radius = 0, --circle and donut
+                inradius = 0, --donut only
+                xlength = VIRTUAL_WIDTH, --box only
+                ylength = VIRTUAL_HEIGHT/5, --box only
+            
+                damage = 5, --how much damage this AOE will inflict
+                snaptime = 1.5, -- time telegraph will show/when the snapshot occurs
+                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+                player = self.player,
+    
+                effect = 'knockback', --'knockback', debuff name 
+                degree = 90, --direction for knockback
+                duration = .5 -- effect duration if applicable
+    
+            }
+            self.stage:addAOE(aoe1)
+        end)
+        Timer.after(t[3], function()
+            local aoe1= AOEwithEffect{
+                shape = 'box',
+            
+                --coordinates 
+                x = 0,
+                y = VIRTUAL_HEIGHT/5*2,
+            
+                radius = 0, --circle and donut
+                inradius = 0, --donut only
+                xlength = VIRTUAL_WIDTH, --box only
+                ylength = VIRTUAL_HEIGHT/5, --box only
+            
+                damage = 5, --how much damage this AOE will inflict
+                snaptime = 1.5, -- time telegraph will show/when the snapshot occurs
+                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+                player = self.player,
+    
+                effect = 'knockback', --'knockback', debuff name 
+                degree = -90, --direction for knockback
+                duration = .5 -- effect duration if applicable
+    
+            }
+            self.stage:addAOE(aoe1)
+        end)
+        Timer.after(t[4], function()
+            local aoe1= AOEwithEffect{
+                shape = 'box',
+            
+                --coordinates 
+                x = 0,
+                y = VIRTUAL_HEIGHT/5*3,
+            
+                radius = 0, --circle and donut
+                inradius = 0, --donut only
+                xlength = VIRTUAL_WIDTH, --box only
+                ylength = VIRTUAL_HEIGHT/5, --box only
+            
+                damage = 5, --how much damage this AOE will inflict
+                snaptime = 1.5, -- time telegraph will show/when the snapshot occurs
+                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+                player = self.player,
+    
+                effect = 'knockback', --'knockback', debuff name 
+                degree = 90, --direction for knockback
+                duration = .5 -- effect duration if applicable
+    
+            }
+            self.stage:addAOE(aoe1)
+        end)
+        Timer.after(t[5], function()
+            local aoe1= AOEwithEffect{
+                shape = 'box',
+            
+                --coordinates 
+                x = 0,
+                y = VIRTUAL_HEIGHT/5*4,
+            
+                radius = 0, --circle and donut
+                inradius = 0, --donut only
+                xlength = VIRTUAL_WIDTH, --box only
+                ylength = VIRTUAL_HEIGHT/5, --box only
+            
+                damage = 5, --how much damage this AOE will inflict
+                snaptime = 1.5, -- time telegraph will show/when the snapshot occurs
+                --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+                player = self.player,
+    
+                effect = 'knockback', --'knockback', debuff name 
+                degree = -90, --direction for knockback
+                duration = .5 -- effect duration if applicable
+    
+            }
+            self.stage:addAOE(aoe1)
+        end)
+        Timer.after(2.6, function() self.mech2counter = 1 end)
 
-            effect = 'knockback', --'knockback', debuff name 
-            degree = -45, --direction for knockback
-            duration = .1 -- effect duration if applicable
 
-        }
-        
-        self.stage:addAOE(aoe1)
     end
 end
 

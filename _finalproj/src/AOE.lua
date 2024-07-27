@@ -134,10 +134,16 @@ function AOE:render()
 
         if self.shape == 'circle' then
             love.graphics.circle("fill", self.x, self.y, self.radius)
+
+            love.graphics.setColor(255, 0, 0, 200)
+            love.graphics.circle("line", self.x, self.y, self.radius)
         end
 
         if self.shape == 'box' then
             love.graphics.rectangle("fill", self.x, self.y, self.xlength, self.ylength)
+
+            love.graphics.setColor(255, 0, 0, 200)
+            love.graphics.rectangle("line", self.x, self.y, self.xlength, self.ylength)
         end
 
         if self.shape == 'donut' then
@@ -145,10 +151,18 @@ function AOE:render()
             love.graphics.circle("fill", self.x, self.y, self.radius)
             love.graphics.setColor(0, 0, 0, 225)
             love.graphics.circle("fill", self.x, self.y, self.inradius)
+
+            love.graphics.setColor(255, 0, 0, 200)
+            love.graphics.circle("line", self.x, self.y, self.radius)
+            love.graphics.setColor(255, 0, 0, 225)
+            love.graphics.circle("line", self.x, self.y, self.inradius)
         end
 
         if self.shape == 'triangle' then
             love.graphics.polygon("fill", self.x,self.y, self.x2,self.y2, self.x3,self.y3 )
+
+            love.graphics.setColor(255, 0, 0, 200)
+            love.graphics.polygon("line", self.x,self.y, self.x2,self.y2, self.x3,self.y3 )
         end
 
     end
