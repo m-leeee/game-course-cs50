@@ -74,7 +74,7 @@ function BossBullet:render()--(adjacentOffsetX,adjacentOffsetY)
 --[[     love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.states[self.state].frame or self.frame],
         self.x + adjacentOffsetX, self.y + adjacentOffsetY) ]]
         
-        love.graphics.setColor(255, 50, 0, 200)
+        love.graphics.setColor(100, 0, 0, 225)
 
         love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.radius)
 

@@ -4,6 +4,7 @@ function Boss:init(def)
 
     Entity.init(self, def)
     self.bullets = {}
+    self.phase = 0
 
 end
 

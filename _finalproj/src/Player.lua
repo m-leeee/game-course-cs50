@@ -6,6 +6,7 @@ function Player:init(def)
     self.gcdrolled = false
 
     self.bullets = {}
+    self.knockbacktracker ={} 
 end
 
 function Player:update(dt)

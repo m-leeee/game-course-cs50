@@ -120,6 +120,28 @@ function Sandbox:init(def)
 
     }
 
+    self.aoe5 = AOEwithEffect{
+        shape = 'box',
+    
+        --coordinates 
+        x = VIRTUAL_WIDTH / 3,
+        y = VIRTUAL_HEIGHT / 3 + 50,
+    
+        radius = 0, --circle and donut
+        inradius = 0, --donut only
+        xlength = 10, --box only
+        ylength = 10, --box only
+    
+        damage = 2, --how much damage this AOE will inflict
+        snaptime = 3, -- time telegraph will show/when the snapshot occurs
+        --persisttime = 0, -- how long persistent AOE lasts. set as 0 if its a 1 tick snap.  --currently on hold 
+        player = self.player,
+        effect = 'knockback', --'knockback', debuff name 
+        degree = -90, --direction for knockback
+        duration = .3 -- effect duration if applicable
+
+    }
+
     self.bullet1 = BossBullet{
         boss = self.boss,
         --self.dungeon = dungeon 
@@ -154,14 +176,15 @@ function Sandbox:init(def)
 
     }
     --table.insert(self.boss.bullets, self.bullet1)
-    self.boss:addBullet(self.bullet1)
-    self.boss:addBullet(self.bullet2)
-    self.boss:addBullet(self.bullet3)
+    --self.boss:addBullet(self.bullet1)
+    --self.boss:addBullet(self.bullet2)
+   -- self.boss:addBullet(self.bullet3)
     self.stage:addEnemy(self.boss)
-    --self.stage:addAOE(self.aoe1)
+    self.stage:addAOE(self.aoe1)
     --self.stage:addAOE(self.aoe2)
     --self.stage:addAOE(self.aoe3)
-    self.stage:addAOE(self.aoe4)
+    --self.stage:addAOE(self.aoe4)
+    self.stage:addAOE(self.aoe5)
 
     Timer.every(.1, function() --moving function, might want to update
     self.aoe3.x = self.aoe3.x+1

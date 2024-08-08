@@ -23,7 +23,7 @@ function PlayState:init()
         offsetY = 5
     }
 
-    self.stage = Sandbox{player = self.player}
+    self.stage = Stage1{player=self.player}--Stage1{player=self.player}--Sandbox{player = self.player}
 
     --self.dungeon = Dungeon(self.player)
     --self.currentRoom = Room(self.player)
@@ -33,7 +33,8 @@ function PlayState:init()
         --['walk'] = function() return PlayerWalkState(self.player, self.dungeon) end,
         --['idle'] = function() return PlayerIdleState(self.player, self.dungeon) end,
         --['swing-sword'] = function() return PlayerSwingSwordState(self.player, self.dungeon) end,
-        ['default'] =  function() return PlayerDefaultState(self.player) end
+        ['default'] =  function() return PlayerDefaultState(self.player) end,
+        ['kb'] = function() return PlayerKnockbackState(self.player) end --TODO: add more params
     }
     self.player:changeState('default')
 end
