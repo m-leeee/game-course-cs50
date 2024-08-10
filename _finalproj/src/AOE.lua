@@ -1,26 +1,25 @@
 AOE = Class{}
 
 function AOE:init(def)
-    self.shape = def.shape --'circle', 'box','donut', and 'triangle' as options 
+    --self.shape = def.shape --'circle', 'box','donut', and 'triangle' as options 
     
     --coordinates 
     self.x = def.x
     self.y = def.y
 
-    self.radius = def.radius --circle and donut
+--[[     self.radius = def.radius --circle and donut
     self.inradius = def.inradius --donut only
     self.xlength = def.xlength --box only
     self.ylength = def.ylength --box only
     self.x2 = def.x2 --triangle only
     self.y2 = def.y2 --triangle only   
     self.x3 = def.x3 --triangle only
-    self.y3 = def.y3 --triangle only
+    self.y3 = def.y3 --triangle only ]]
 
     self.damage = def.damage --how much damage this AOE will inflict
     self.teleactive = true --is the telegraph visual active
     self.snaptime = def.snaptime -- time telegraph will show/when the snapshot occurs
     self.snapshot = false -- is damage snapshot active 
-    --self.persisttime = def.persisttime -- how long persistent AOE lasts. set as 0 if its a 1 tick snap. --maybe don't want to implement this 
 
     self.timepast = 0 -- time tracker  
     self.done = false -- check for deletion
@@ -40,7 +39,7 @@ end
 
 
 function AOE:hits(target)
-    --if snapshot active and hitbox collides with AOE, deducts damage from target HP and returns true; else, returns false
+--[[     --if snapshot active and hitbox collides with AOE, deducts damage from target HP and returns true; else, returns false
 
     if self.snapshot then
         if self.shape == 'circle' then
@@ -98,27 +97,11 @@ function AOE:hits(target)
         end
     end
 
-    return false
+    return false ]]
 
 end
 
-
-
 function AOE:update(dt)
-    --self.timepast = self.timepast + dt -- !!! WILL WANT TO USE TIMER (This is just a quick implementation for the time being because i dont remember how to use the timer in lib)
---[[     if self.timepast > self.snaptime then
-        self.teleactive = false
-        if not self.done then
-            self.snapshot = true
-        end
-        self.done = true
-    end ]]
-
-
---[[     if self.timepast > self.snaptime + self.persisttime then -- Another timer implementation in the (near) future.... 
-        self.snapshot = false
-        self.done = true
-    end ]] --changing my mind on the persistent aoe implementation so this is irrelevant for now
     if self.snapshot then
         self:hits(self.player)
     end
@@ -126,7 +109,7 @@ function AOE:update(dt)
 end
 
 function AOE:render()
-    --render a warning telegraph (mechanical indicator standard), then the actual AOE (visual flair w sfx when i have assets)
+--[[     --render a warning telegraph (mechanical indicator standard), then the actual AOE (visual flair w sfx when i have assets)
     --damage should snapshot the moment the telegraph disappears 
     if self.teleactive then
         
@@ -165,6 +148,6 @@ function AOE:render()
             love.graphics.polygon("line", self.x,self.y, self.x2,self.y2, self.x3,self.y3 )
         end
 
-    end
+    end ]]
 
 end

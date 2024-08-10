@@ -30,7 +30,11 @@ require 'src/Boss'
 require 'src/bosses/Shiba'
 
 require 'src/AOE'
-require 'src/AOEwithEffect'
+require 'src/AOEBox'
+require 'src/AOECircle'
+require 'src/AOEDonut'
+require 'src/AOETriangle'
+require 'src/AOEBoxKnockback'
 
 gTextures = {
     ['player'] = love.graphics.newImage('graphics/player.png'),

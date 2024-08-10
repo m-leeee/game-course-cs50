@@ -153,8 +153,7 @@ function Stage1:mech2()
     if self.mech2counter ==1 then
         self.mech2counter = self.mech2counter+1
         Timer.after(t[1], function()
-            local aoe1= AOEwithEffect{
-                shape = 'box',
+            local aoe1= AOEBoxKnockback{
             
                 --coordinates 
                 x = 0,
@@ -178,8 +177,7 @@ function Stage1:mech2()
             self.stage:addAOE(aoe1)
         end)
         Timer.after(t[2], function()
-            local aoe1= AOEwithEffect{
-                shape = 'box',
+            local aoe1= AOEBoxKnockback{
             
                 --coordinates 
                 x = 0,
@@ -203,8 +201,7 @@ function Stage1:mech2()
             self.stage:addAOE(aoe1)
         end)
         Timer.after(t[3], function()
-            local aoe1= AOEwithEffect{
-                shape = 'box',
+            local aoe1= AOEBoxKnockback{
             
                 --coordinates 
                 x = 0,
@@ -228,8 +225,7 @@ function Stage1:mech2()
             self.stage:addAOE(aoe1)
         end)
         Timer.after(t[4], function()
-            local aoe1= AOEwithEffect{
-                shape = 'box',
+            local aoe1= AOEBoxKnockback{
             
                 --coordinates 
                 x = 0,
@@ -253,8 +249,7 @@ function Stage1:mech2()
             self.stage:addAOE(aoe1)
         end)
         Timer.after(t[5], function()
-            local aoe1= AOEwithEffect{
-                shape = 'box',
+            local aoe1= AOEBoxKnockback{
             
                 --coordinates 
                 x = 0,
@@ -288,8 +283,7 @@ function Stage1:mech3()
     local t = 1.3
     if self.mech3counter == 1 then
         Timer.after(t, function()
-            local aoe1= AOE{
-                shape = 'circle',
+            local aoe1= AOECircle{
             
                 --coordinates 
                 x = self.player.hitx,
@@ -307,8 +301,7 @@ function Stage1:mech3()
         self.mech3counter = self.mech3counter + 1
     elseif self.mech3counter == 2 then
         Timer.after(t*2, function()
-            local aoe1= AOE{
-                shape = 'circle',
+            local aoe1= AOECircle{
             
                 --coordinates 
                 x = self.player.hitx,
@@ -331,8 +324,7 @@ function Stage1:mech3()
 
             xx = self.player.hitx
             yy = self.player.hity
-            local aoe1= AOE{
-                shape = 'circle',
+            local aoe1= AOECircle{
             
                 --coordinates 
                 x = xx,
@@ -349,8 +341,7 @@ function Stage1:mech3()
         end)
         self.mech3counter = self.mech3counter + 1
         Timer.after((t*3)+1, function()
-            local aoe2 = AOE{
-                shape = 'donut',
+            local aoe2 = AOEDonut{
             
                 --coordinates 
                 x = xx,
@@ -380,8 +371,7 @@ function Stage1:mech4()
     if self.mech4counter == 1 then
         self.mech4counter = self.mech4counter + 1
         Timer.after(t, function()
-            local aoe1= AOE{
-                shape = 'triangle',
+            local aoe1= AOETriangle{
             
                 --coordinates 
                 x = VIRTUAL_WIDTH/2,
@@ -402,8 +392,7 @@ function Stage1:mech4()
     elseif self.mech4counter == 2 then
         self.mech4counter = self.mech4counter + 1
         Timer.after(t*2, function()
-            local aoe1= AOE{
-                shape = 'triangle',
+            local aoe1= AOETriangle{
             
                 --coordinates 
                 x = VIRTUAL_WIDTH/2,
@@ -424,8 +413,7 @@ function Stage1:mech4()
     elseif self.mech4counter == 3 then
         self.mech4counter = self.mech4counter + 1
         Timer.after(t*3, function()
-            local aoe1= AOE{
-                shape = 'triangle',
+            local aoe1= AOETriangle{
             
                 --coordinates 
                 x = VIRTUAL_WIDTH/2,
@@ -446,8 +434,7 @@ function Stage1:mech4()
     elseif self.mech4counter == 4 then
         self.mech4counter = self.mech4counter + 1
         Timer.after(t*4, function()
-            local aoe1= AOE{
-                shape = 'triangle',
+            local aoe1= AOETriangle{
             
                 --coordinates 
                 x = VIRTUAL_WIDTH/2,
@@ -480,7 +467,25 @@ end
 function Stage1:update(dt)
     self.stage:update(dt)
     --TODO: phase changes 
-    self.boss.phase = 2
+
+    if self.boss.hppercent > .9 then
+        self.boss.phase = 1
+    elseif self.boss.hppercent > .75 then
+        self.boss.phase = 2
+    elseif self.boss.hppercent > .60 then 
+        self.boss.phase = 3
+    elseif self.boss.hppercent > .50 then
+        self.boss.phase = 4
+    elseif self.boss.hppercent > .40 then
+        self.boss.phase = 5
+    elseif self.boss.hppercent > .30 then
+        self.boss.phase = 2
+    elseif self.boss.hppercent > .15 then
+        self.boss.phase = 6
+    else
+        self.boss.phase = 7
+    end
+
     if self.boss.phase == 1 then --TENNIS BALLS BARRAGE
         self:mech1()
     elseif self.boss.phase == 2 then --TRAFFIC
@@ -489,9 +494,15 @@ function Stage1:update(dt)
         self:mech3()
     elseif self.boss.phase == 4 then --DUSTSTORM
         self:mech4()
-    elseif self.boss.phase == 5 then --DUSTSTORM
+    elseif self.boss.phase == 5 then --TENNIS BALLS & BOMB TOSS
         self:mech1()
         self:mech3()
+    elseif self.boss.phase == 6 then --TENNIS BALLS & DUSTSTORM
+        self:mech1()
+        self:mech4()
+    elseif self.boss.phase == 7 then --BOMB TOSS & DUSTSTORM
+        self:mech3()
+        self:mech4()
     end
 
 
