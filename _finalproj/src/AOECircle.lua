@@ -2,7 +2,7 @@ AOECircle = Class{__includes = AOE}
 
 function AOECircle:init(def)
     AOE.init(self, def)
-    self.radius = def.radius --circle 
+    self.radius = def.radius --circle radius
 
 end
 

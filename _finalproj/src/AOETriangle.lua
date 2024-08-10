@@ -1,11 +1,11 @@
 AOETriangle = Class{__includes = AOE}
 
 function AOETriangle:init(def)
-    AOE.init(self, def)
-    self.x2 = def.x2 --triangle only
-    self.y2 = def.y2 --triangle only   
-    self.x3 = def.x3 --triangle only
-    self.y3 = def.y3 --triangle only
+    AOE.init(self, def) --define the first vertex x,y values with the default x y initiatlization that AOEs have
+    self.x2 = def.x2 --2nd vertex x coordinate
+    self.y2 = def.y2 --2nd vertex y coordinate
+    self.x3 = def.x3 --3rd vertex x coordinate
+    self.y3 = def.y3 --3rd vertex y coordinate 
 
 end
 
@@ -14,7 +14,6 @@ function AOETriangle:hits(target)
     --if snapshot active and hitbox collides with AOE, deducts damage from target HP and returns true; else, returns false
 
     if self.snapshot then
-
 
         --calculate AOE triangle area
         local tri0 = self.x*(self.y2-self.y3) + self.x2*(self.y3-self.y) + self.x3*(self.y-self.y2)

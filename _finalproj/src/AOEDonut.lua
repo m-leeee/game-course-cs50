@@ -2,8 +2,8 @@ AOEDonut = Class{__includes = AOE}
 
 function AOEDonut:init(def)
     AOE.init(self, def)
-    self.radius = def.radius --circle and donut
-    self.inradius = def.inradius --donut only
+    self.radius = def.radius --outer radius
+    self.inradius = def.inradius --inner radius
 end
 
 
@@ -11,7 +11,6 @@ function AOEDonut:hits(target)
     --if snapshot active and hitbox collides with AOE, deducts damage from target HP and returns true; else, returns false
 
     if self.snapshot then
-
 
         local centerx = self.x
         local centery = self.y
@@ -25,7 +24,6 @@ function AOEDonut:hits(target)
             self.snapshot= false
             return true -- ir radius < distance, then true
         end
-
 
     end
 
@@ -53,7 +51,6 @@ function AOEDonut:render()
         love.graphics.circle("line", self.x, self.y, self.radius)
         love.graphics.setColor(255, 0, 0, 225)
         love.graphics.circle("line", self.x, self.y, self.inradius)
-
 
 
     end

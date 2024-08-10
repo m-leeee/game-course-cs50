@@ -1,20 +1,12 @@
 AOE = Class{}
+-- This class is meant to be a general template for all AOE type classes.
 
 function AOE:init(def)
-    --self.shape = def.shape --'circle', 'box','donut', and 'triangle' as options 
-    
+
     --coordinates 
     self.x = def.x
     self.y = def.y
 
---[[     self.radius = def.radius --circle and donut
-    self.inradius = def.inradius --donut only
-    self.xlength = def.xlength --box only
-    self.ylength = def.ylength --box only
-    self.x2 = def.x2 --triangle only
-    self.y2 = def.y2 --triangle only   
-    self.x3 = def.x3 --triangle only
-    self.y3 = def.y3 --triangle only ]]
 
     self.damage = def.damage --how much damage this AOE will inflict
     self.teleactive = true --is the telegraph visual active
@@ -39,65 +31,8 @@ end
 
 
 function AOE:hits(target)
---[[     --if snapshot active and hitbox collides with AOE, deducts damage from target HP and returns true; else, returns false
-
-    if self.snapshot then
-        if self.shape == 'circle' then
-            --distance equation from player coordinate
-            local centerx = self.x
-            local centery = self.y
-            if ((target.hitx - centerx)^2 + (target.hity - centery)^2)^(1/2) < self.radius then
-                target.health = target.health - self.damage
-                self.snapshot= false
-                return true --if radius < distance, then true
-            end
-        end
-
-
-        if self.shape == 'box' then
-            --compare hitbox to corners of box 
-            if (self.x < target.hitx) and (self.x + self.xlength > target.hitx) and (self.y < target.hity) and (self.y + self.ylength > target.hity) then
-                target.health = target.health - self.damage
-                self.snapshot= false
-                return true --check lowerxlimit < x < upperxlimit and lowerylimit< y < upperylimit
-            end
-        end
-
-        if self.shape == 'donut' then
-            local centerx = self.x
-            local centery = self.y
-            --check if inside the donut hole
-            if ((target.hitx - centerx)^2 + (target.hity - centery)^2)^(1/2) < self.inradius then
-                return false --if inside inradius, then false
-            end
-            --check if in the greater circle
-            if ((target.hitx - centerx)^2 + (target.hity - centery)^2)^(1/2) < self.radius then
-                target.health = target.health - self.damage
-                self.snapshot= false
-                return true -- ir radius < distance, then true
-            end
-        end
-
-        if self.shape == 'triangle' then
-
-            --calculate AOE triangle area
-            local tri0 = self.x*(self.y2-self.y3) + self.x2*(self.y3-self.y) + self.x3*(self.y-self.y2)
-            --calculate area of 3 triangles forming vertices with target hitbox and 2 of the original AOE vertices
-            local thx = target.hitx
-            local thy = target.hity
-            local tri1 = thx*(self.y2-self.y3) + self.x2*(self.y3-thy) + self.x3*(thy-self.y2) --replacing x y 
-            local tri2 = self.x*(thy-self.y3) + thx*(self.y3-self.y) + self.x3*(self.y-thy) --replacing x2 y2
-            local tri3 = self.x*(self.y2-thy) + self.x2*(thy-self.y) + thx*(self.y-self.y2) --replacing x3 y3
-            --if these two are equal, then the hitbox  is in the AOE 
-            if math.abs(tri0) >= math.abs(tri1)+math.abs(tri2)+math.abs(tri3) then
-                target.health = target.health - self.damage
-                self.snapshot= false
-                return true
-            end
-        end
-    end
-
-    return false ]]
+ --This function determines whether the AOE hits the given target. Implementation varies depending on the geometry of the AOE, and there is no general implementation at this time.
+ --Ensure this is defined for all AOE subclasses.
 
 end
 
@@ -109,45 +44,6 @@ function AOE:update(dt)
 end
 
 function AOE:render()
---[[     --render a warning telegraph (mechanical indicator standard), then the actual AOE (visual flair w sfx when i have assets)
-    --damage should snapshot the moment the telegraph disappears 
-    if self.teleactive then
-        
-        love.graphics.setColor(255, 100, 0, 200)
-
-        if self.shape == 'circle' then
-            love.graphics.circle("fill", self.x, self.y, self.radius)
-
-            love.graphics.setColor(255, 0, 0, 200)
-            love.graphics.circle("line", self.x, self.y, self.radius)
-        end
-
-        if self.shape == 'box' then
-            love.graphics.rectangle("fill", self.x, self.y, self.xlength, self.ylength)
-
-            love.graphics.setColor(255, 0, 0, 200)
-            love.graphics.rectangle("line", self.x, self.y, self.xlength, self.ylength)
-        end
-
-        if self.shape == 'donut' then
-            --not sure if this is gonna look right with the built in love2d graphics tools but this will be addressed later if so with real assets or something idk
-            love.graphics.circle("fill", self.x, self.y, self.radius)
-            love.graphics.setColor(0, 0, 0, 225)
-            love.graphics.circle("fill", self.x, self.y, self.inradius)
-
-            love.graphics.setColor(255, 0, 0, 200)
-            love.graphics.circle("line", self.x, self.y, self.radius)
-            love.graphics.setColor(255, 0, 0, 225)
-            love.graphics.circle("line", self.x, self.y, self.inradius)
-        end
-
-        if self.shape == 'triangle' then
-            love.graphics.polygon("fill", self.x,self.y, self.x2,self.y2, self.x3,self.y3 )
-
-            love.graphics.setColor(255, 0, 0, 200)
-            love.graphics.polygon("line", self.x,self.y, self.x2,self.y2, self.x3,self.y3 )
-        end
-
-    end ]]
-
+--At the given time, there is no general render for AOEs as they are shape dependent using LOVE2D's draw functions. 
+--Later, when swapping over to actual sprites/assets, there will likely be a general implementation for renders.
 end
