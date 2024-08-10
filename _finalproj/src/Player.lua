@@ -36,8 +36,6 @@ function Player:render()
     --hitbox
      love.graphics.setColor(255, 0, 255, 255)
      love.graphics.rectangle("fill", self.hitx, self.hity, 1, 1)
-    -- love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
-    -- love.graphics.setColor(255, 255, 255, 255)
 
     for k, bullet in pairs(self.bullets) do
         bullet:render()

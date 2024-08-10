@@ -1,5 +1,5 @@
 Sandbox = Class{}
--- This class is meant as a testing space for features
+-- This class is meant as a testing space for features 
 
 function Sandbox:init(def)
     self.player = def.player
@@ -29,9 +29,6 @@ function Sandbox:init(def)
     }
 
     self.boss.stateMachine = StateMachine {
-        --['walk'] = function() return PlayerWalkState(self.player, self.dungeon) end,
-        --['idle'] = function() return PlayerIdleState(self.player, self.dungeon) end,
-        --['swing-sword'] = function() return PlayerSwingSwordState(self.player, self.dungeon) end,
         ['default'] =  function() return EntityIdleState(self.boss) end
     }
     self.boss:changeState('default')

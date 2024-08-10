@@ -7,17 +7,6 @@ function BossBullet:init(def)
     self.x = self.boss.x + self.boss.width/2
     self.y = self.boss.y + self.boss.height/2
     self.degree = def.degree -- direction of the bullet, 0 is +Y, 90 is +X
-    --maybe implement modulation here but...TODO:
-
-    --self.direction = player.direction
-
-    --self.texture = 'tiles'
-    --self.type = 'pot'
-    --self.frame = 14
-
-    --self.solid = true
-    --self.state = 'unbroken'
-    --self.states = {['unbroken'] = {frame = 14}, ['broken'] = {frame = 52}}
 
     self.radius = def.radius
     self.width = self.radius*2
@@ -49,13 +38,11 @@ end
 
 function BossBullet:update(dt)
 
-    --position update do i remember how math works
+    --position update
 
     local rad = math.rad(self.degree)
     self.y = self.y + math.cos(rad) * self.speed * dt
     self.x = self.x + math.sin(rad) * self.speed * dt
-
-
 
 
     --self.traveled = self.traveled + dt 
@@ -71,11 +58,8 @@ function BossBullet:update(dt)
 end
 
 function BossBullet:render()--(adjacentOffsetX,adjacentOffsetY)
---[[     love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.states[self.state].frame or self.frame],
-        self.x + adjacentOffsetX, self.y + adjacentOffsetY) ]]
         
         love.graphics.setColor(100, 0, 0, 225)
-
         love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.radius)
 
 end

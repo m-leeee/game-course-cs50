@@ -15,7 +15,6 @@ function PlayState:init()
         hboxw = 12,
         hboxh = 12,
 
-        -- one heart == 2 health
         health = 6,
         maxhealth = 7,
 
@@ -23,18 +22,12 @@ function PlayState:init()
         offsetY = 5
     }
 
-    self.stage = Stage1{player=self.player}--Stage1{player=self.player}--Sandbox{player = self.player}
+    self.stage = Stage1{player=self.player} --Stage1{player=self.player} or Sandbox{player = self.player}
 
-    --self.dungeon = Dungeon(self.player)
-    --self.currentRoom = Room(self.player)
-    -- need to put stuff for Stage here 
 
     self.player.stateMachine = StateMachine {
-        --['walk'] = function() return PlayerWalkState(self.player, self.dungeon) end,
-        --['idle'] = function() return PlayerIdleState(self.player, self.dungeon) end,
-        --['swing-sword'] = function() return PlayerSwingSwordState(self.player, self.dungeon) end,
         ['default'] =  function() return PlayerDefaultState(self.player) end,
-        ['kb'] = function() return PlayerKnockbackState(self.player) end --TODO: add more params
+        ['kb'] = function() return PlayerKnockbackState(self.player) end 
     }
     self.player:changeState('default')
 end
@@ -46,13 +39,11 @@ function PlayState:update(dt)
 
     self.player:update(dt)
     self.stage:update(dt)
-    --self.dungeon:update(dt)
 end
 
 function PlayState:render()
-    -- render dungeon and all entities separate from hearts GUI
+
     love.graphics.push()
-    --self.dungeon:render()
 
     self.stage:render()
     self.player:render()
@@ -60,22 +51,5 @@ function PlayState:render()
 
     love.graphics.pop()
 
-    -- draw player hearts, top of screen
-    local healthLeft = self.player.health
-    local heartFrame = 1
-
-    for i = 1, 3 do
-        if healthLeft > 1 then
-            heartFrame = 5
-        elseif healthLeft == 1 then
-            heartFrame = 3
-        else
-            heartFrame = 1
-        end
-
-        --love.graphics.draw(gTextures['hearts'], gFrames['hearts'][heartFrame],
-        --    (i - 1) * (TILE_SIZE + 1), 2)
-        
-        healthLeft = healthLeft - 2
-    end
+    -- TODO: draw UI here 
 end

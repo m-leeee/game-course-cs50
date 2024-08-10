@@ -2,20 +2,13 @@ PlayerBullet = Class{}
 
 function PlayerBullet:init(player)
     self.player = player
-    --self.dungeon = dungeon 
 
     self.x = player.hitx
     self.y = player.y
-    --self.direction = player.direction
 
-    --self.texture = 'tiles'
-    --self.type = 'pot'
-    --self.frame = 14
     self. width = 6
     self.height = 6
-    --self.solid = true
-    --self.state = 'unbroken'
-    --self.states = {['unbroken'] = {frame = 14}, ['broken'] = {frame = 52}}
+
 
     self.radius = 3
     self.damage = 1
@@ -49,9 +42,7 @@ function PlayerBullet:update(dt)
 
 end
 
-function PlayerBullet:render()--(adjacentOffsetX,adjacentOffsetY)
---[[     love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.states[self.state].frame or self.frame],
-        self.x + adjacentOffsetX, self.y + adjacentOffsetY) ]]
+function PlayerBullet:render()
         
         love.graphics.setColor(100, 100, 225, 200)
 
