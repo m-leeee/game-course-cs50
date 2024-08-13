@@ -1,3 +1,7 @@
+--[[
+    This defines the main player controlled unit in game. 
+]]
+
 Player = Class { __includes = Entity }
 
 function Player:init(def)
