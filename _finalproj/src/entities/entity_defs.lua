@@ -1,9 +1,9 @@
 ENTITY_DEFS = {
     ['player'] = {
         walkSpeed = 60,
-        animations = {            
+        animations = {
             ['idle'] = {
-                frames = {1},
+                frames = { 1 },
                 texture = 'player'
             }
         }
@@ -12,10 +12,10 @@ ENTITY_DEFS = {
     ['shiba'] = {
         animations = {
 
-        ['idle'] = {
-            frames = {1},
-            texture = 'shiba'
+            ['idle'] = {
+                frames = { 1 },
+                texture = 'shiba'
+            }
         }
-    }
     }
 }

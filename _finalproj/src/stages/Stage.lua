@@ -1,20 +1,19 @@
--- sets the stage 
--- loads anything stages will have in general such as background + score + health + other UI elements 
--- probably need to make a separate file stage_def or smth with all the info 
+--[[
+    This is the class that contains and handles the shared elements all specific stages will need
+    such as storing and handling AOE lists, enemy lists, UI elements, etc.
 
--- stage lists will probably have entity lists with mechanics baked into specific entities? 
+    Other stages (such as stage1 and Sandbox) wilL define the specifics of what enemies and mechanics occur in each.
 
-Stage = Class{}
+    Currently, Stage is an object other stages will initialize, rather than acting as a Parent/Base class.
+    It may be worth changing this in the future, but currently does not seem to have issues as is.
+]]
+
+Stage = Class {}
 
 function Stage:init(def)
     self.player = def.player
-
-
-    self.AOEs = {} --table to hold and manage all active AOEs
-    self.enemies = {} --table to hold and manage all active enemies 
-
-
-
+    self.AOEs = {}    --table to hold and manage all active AOEs
+    self.enemies = {} --table to hold and manage all active enemies
 end
 
 function Stage:addAOE(AOE)
@@ -28,15 +27,14 @@ end
 function Stage:cleanAOElist()
     for k, aoe in pairs(self.AOEs) do
         if aoe.done then
-            table.remove(self.AOEs,k)
+            table.remove(self.AOEs, k)
         end
     end
 end
 
---need to add clean enemy list once deaths are implemented 
+--TODO: need to add clean enemy list once deaths are implemented
 
 function Stage:update(dt)
-
     for k, aoe in pairs(self.AOEs) do
         aoe:update(dt)
     end
@@ -45,8 +43,8 @@ function Stage:update(dt)
     for k, mob in pairs(self.enemies) do
         mob:update(dt)
     end
-    --clean enemy list when implemented as well
-    --if boss.dead == true, then can clean from EnemyList, but may want to implement an animation and clear it after the animation is done 
+    --TODO: clean enemy list when it is implemented
+    --if boss.dead == true, then can clean from EnemyList, but may want to implement an animation and clear it after the animation is done
 
 
     for b, bullet in pairs(self.player.bullets) do
@@ -63,20 +61,13 @@ function Stage:update(dt)
             bullet:collides(self.player)
         end
     end
-
 end
 
 function Stage:render()
-
     for k, aoe in pairs(self.AOEs) do
         aoe:render()
-        
---[[         love.graphics.setColor(255, 0, 255, 255) --tests cleanAOElist
-        love.graphics.printf(k, 1, 10*k, 100, 'center') ]]
     end
     for k, mob in pairs(self.enemies) do
         mob:render()
     end
-
 end
-

@@ -51,8 +51,6 @@ gFrames = {
     ['shiba'] = GenerateQuads(gTextures['shiba'], 256, 256)
 }
 
-
-
 gFonts = {
     ['small'] = love.graphics.newFont('fonts/font.ttf', 8),
     ['medium'] = love.graphics.newFont('fonts/font.ttf', 16),

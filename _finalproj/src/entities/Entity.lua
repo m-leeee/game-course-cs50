@@ -1,9 +1,10 @@
+--[[
+    This is the base class for all Entities, which is inclusive of the player and all enemies/bosses.
+]]
 
-
-Entity = Class{}
+Entity = Class {}
 
 function Entity:init(def)
-
     -- in top-down games, there are four directions instead of two
     self.direction = 'down'
 
@@ -16,9 +17,8 @@ function Entity:init(def)
     self.width = def.width
     self.height = def.height
 
-    self.hitx = self.x + (self.width/2)
-    self.hity = self.y + (self.height/2)
-
+    self.hitx = self.x + (self.width / 2)
+    self.hity = self.y + (self.height / 2)
 
     -- drawing offsets for padded sprites
     self.offsetX = def.offsetX or 0
@@ -62,7 +62,7 @@ end
 ]]
 function Entity:collides(target)
     return not (self.x + self.width < target.x or self.x > target.x + target.width or
-                self.y + self.height < target.y or self.y > target.y + target.height)
+        self.y + self.height < target.y or self.y > target.y + target.height)
 end
 
 function Entity:damage(dmg)
@@ -105,9 +105,9 @@ function Entity:update(dt)
     self.hppercent = self.health / self.maxhealth
 
 
-    self.hitx = self.x + (self.width/2)
-    self.hity = self.y + (self.height/2)
-     
+    self.hitx = self.x + (self.width / 2)
+    self.hity = self.y + (self.height / 2)
+
     if self.health < 0 then
         self.dead = true
     end
@@ -118,11 +118,10 @@ function Entity:processAI(params, dt)
 end
 
 function Entity:render(adjacentOffsetX, adjacentOffsetY)
-    
     -- draw sprite slightly transparent if invulnerable every 0.04 seconds
     if self.invulnerable and self.flashTimer > 0.06 then
         self.flashTimer = 0
-        love.graphics.setColor(1, 1, 1, 64/255)
+        love.graphics.setColor(1, 1, 1, 64 / 255)
     end
 
     self.x, self.y = self.x + (adjacentOffsetX or 0), self.y + (adjacentOffsetY or 0)
@@ -133,12 +132,12 @@ function Entity:render(adjacentOffsetX, adjacentOffsetY)
 
 
 
-        --rudimentary hp bar implementation: white backing at 100pix, purple front scaled to %
-        love.graphics.setColor(255, 255, 255, 255) 
-        love.graphics.rectangle('line', self.x, self.y, 30, 1)
-        love.graphics.setColor(255, 0, 255, 255)
-        if self.health > 0 then
-            love.graphics.rectangle('line', self.x, self.y, self.hppercent*30, 1)
-            love.graphics.setColor(255, 255, 255, 255)
-        end
+    --rudimentary hp bar implementation: white backing at 100pix, purple front scaled to %
+    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.rectangle('line', self.x, self.y, 30, 1)
+    love.graphics.setColor(255, 0, 255, 255)
+    if self.health > 0 then
+        love.graphics.rectangle('line', self.x, self.y, self.hppercent * 30, 1)
+        love.graphics.setColor(255, 255, 255, 255)
+    end
 end

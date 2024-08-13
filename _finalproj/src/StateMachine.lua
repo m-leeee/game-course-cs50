@@ -1,4 +1,4 @@
-StateMachine = Class{}
+StateMachine = Class {}
 
 function StateMachine:init(states)
 	self.empty = {

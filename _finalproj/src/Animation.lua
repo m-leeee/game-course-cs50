@@ -1,5 +1,4 @@
-
-Animation = Class{}
+Animation = Class {}
 
 function Animation:init(def)
     self.frames = def.frames

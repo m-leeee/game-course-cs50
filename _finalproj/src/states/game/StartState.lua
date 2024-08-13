@@ -1,6 +1,8 @@
+--[[
+    This is the start menu.
+]]
 
-
-StartState = Class{__includes = BaseState}
+StartState = Class { __includes = BaseState }
 
 function StartState:update(dt)
     if love.keyboard.wasPressed('escape') then
@@ -13,9 +15,7 @@ function StartState:update(dt)
 end
 
 function StartState:render()
-    
     love.graphics.setFont(gFonts['large'])
-    love.graphics.setColor(1,1,1,1)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('START', 2, VIRTUAL_HEIGHT / 2 - 30, VIRTUAL_WIDTH, 'center')
-
 end
