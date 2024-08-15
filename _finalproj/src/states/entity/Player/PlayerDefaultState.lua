@@ -28,11 +28,21 @@ function PlayerDefaultState:update(dt)
         -- self.entity:changeAnimation('walk-down')
     end
 
-    if love.keyboard.isDown('x') then
+    if love.keyboard.isDown('e') then
         if self.entity.gcdrolled == false then
             local bullet = PlayerBullet(self.entity)
 
             table.insert(self.entity.bullets, bullet)
+
+            self.entity.gcdrolled = true -- caps the number of attack actions you can send
+            Timer.after(self.entity.gcdspeed, function()
+                self.entity.gcdrolled = false
+            end)
+        end
+    end
+    if love.keyboard.isDown('w') then
+        if self.entity.gcdrolled == false then
+            self.entity.melee.active = true
 
             self.entity.gcdrolled = true -- caps the number of attack actions you can send
             Timer.after(self.entity.gcdspeed, function()

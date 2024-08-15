@@ -6,6 +6,7 @@ Shiba = Class { __includes = Boss }
 
 function Shiba:init(def)
         Boss.init(self, def)
+        self.hitradius = 15
 end
 
 function Shiba:update(dt)

@@ -8,6 +8,7 @@ function Boss:init(def)
     Entity.init(self, def)
     self.bullets = {}
     self.phase = 0
+    self.hitradius = def.hitradius
 end
 
 function Boss:update(dt)

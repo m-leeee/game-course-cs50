@@ -11,6 +11,7 @@ function Player:init(def)
 
     self.bullets = {}
     self.knockbacktracker = {}
+    self.melee = PlayerMelee(self)
 end
 
 function Player:update(dt)
@@ -25,6 +26,10 @@ function Player:update(dt)
             table.remove(self.bullets, k)
         end
     end
+
+    self.melee:update(dt)
+    self.melee.x = self.hitx
+    self.melee.y = self.hity
 end
 
 function Player:collides(target)
@@ -35,6 +40,7 @@ function Player:collides(target)
 end
 
 function Player:render()
+    self.melee:render()
     Entity.render(self)
 
     --hitbox
@@ -44,4 +50,5 @@ function Player:render()
     for k, bullet in pairs(self.bullets) do
         bullet:render()
     end
+
 end

@@ -56,6 +56,13 @@ function Stage:update(dt)
         end
     end
 
+    if self.player.melee.active == true then
+        for m, mob in pairs(self.enemies) do
+            self.player.melee:hits(mob)
+            self.player.melee.active = false
+        end
+    end
+
     for m, mob in pairs(self.enemies) do
         for b, bullet in pairs(mob.bullets) do
             bullet:collides(self.player)

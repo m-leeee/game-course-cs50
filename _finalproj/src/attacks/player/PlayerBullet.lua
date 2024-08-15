@@ -20,8 +20,16 @@ function PlayerBullet:init(player)
 end
 
 function PlayerBullet:collides(target)
-    return not (self.x + self.width < target.x or self.x > target.x + target.width or
-                self.y + self.height < target.y or self.y > target.y + target.height)
+        --Implementing under the assumption all boss hitboxes will be circular. Should this design decision change, this needs to be updated. 
+    --if the distance between player center (melee origin) and boss hitbox center < radius of both then hits 
+        local centerx = self.x
+        local centery = self.y
+        if ((target.hitx - centerx) ^ 2 + (target.hity - centery) ^ 2) ^ (1 / 2) < self.radius+ target.hitradius then
+            target.health = target.health - self.damage
+            return true
+        end
+        --Collision logic gets checked in Stage 
+
 end
 
 
@@ -46,6 +54,6 @@ function PlayerBullet:render()
         
         love.graphics.setColor(100, 100, 225, 200)
 
-        love.graphics.circle("fill", self.x + self.radius, self.y + self.radius, self.radius)
+        love.graphics.circle("fill", self.x, self.y, self.radius)
 
 end
