@@ -40,7 +40,8 @@ function Boss:render()
     Entity.render(self)
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(1, 1, 1, 1) --(34/255, 34/255, 34/255, 1)
-    love.graphics.printf(self.hppercent * 100 .. '%', self.x, self.y - 10, 100, 'left')
+    local hptruncate = math.floor(self.hppercent * 1000)/10
+    love.graphics.printf(hptruncate .. '%', self.x, self.y - 10, 100, 'left')
 
     for k, bullet in pairs(self.bullets) do
         bullet:render()
