@@ -40,6 +40,8 @@ function Stage1:init(def)
     self.mech2counter = 1
     self.mech3counter = 1
     self.mech4counter = 1
+
+    self.mechdelaycount = 1 --checks whether to delay a mechanic start (for mechanic transitions)
 end
 
 function Stage1:mech1()
@@ -151,10 +153,8 @@ function Stage1:mech2()
                 x = 0,
                 y = 0,
 
-                radius = 0,                   -- circle and donut
-                inradius = 0,                 -- donut only
                 xlength = VIRTUAL_WIDTH,      -- box only
-                ylength = VIRTUAL_HEIGHT / 5, -- box only
+                ylength = VIRTUAL_HEIGHT / 5, -- box only --TODO: clean this up 
 
                 damage = 5,                   -- how much damage this AOE will inflict
                 snaptime = 1.5,               -- time telegraph will show/when the snapshot occurs
@@ -174,8 +174,6 @@ function Stage1:mech2()
                 x = 0,
                 y = VIRTUAL_HEIGHT / 5,
 
-                radius = 0,                   -- circle and donut
-                inradius = 0,                 -- donut only
                 xlength = VIRTUAL_WIDTH,      -- box only
                 ylength = VIRTUAL_HEIGHT / 5, -- box only
 
@@ -197,8 +195,6 @@ function Stage1:mech2()
                 x = 0,
                 y = VIRTUAL_HEIGHT / 5 * 2,
 
-                radius = 0,                   -- circle and donut
-                inradius = 0,                 -- donut only
                 xlength = VIRTUAL_WIDTH,      -- box only
                 ylength = VIRTUAL_HEIGHT / 5, -- box only
 
@@ -220,8 +216,6 @@ function Stage1:mech2()
                 x = 0,
                 y = VIRTUAL_HEIGHT / 5 * 3,
 
-                radius = 0,                   -- circle and donut
-                inradius = 0,                 -- donut only
                 xlength = VIRTUAL_WIDTH,      -- box only
                 ylength = VIRTUAL_HEIGHT / 5, -- box only
 
@@ -243,8 +237,6 @@ function Stage1:mech2()
                 x = 0,
                 y = VIRTUAL_HEIGHT / 5 * 4,
 
-                radius = 0,                   -- circle and donut
-                inradius = 0,                 -- donut only
                 xlength = VIRTUAL_WIDTH,      -- box only
                 ylength = VIRTUAL_HEIGHT / 5, -- box only
 
@@ -468,20 +460,65 @@ function Stage1:update(dt)
     if self.boss.phase == 1 then     -- TENNIS BALLS BARRAGE
         self:mech1()
     elseif self.boss.phase == 2 then -- TRAFFIC
-        self:mech2()
+        if self.mechdelaycount == 1 then
+            Timer.after(2, function() 
+                self:mech2()
+                self.mechdelaycount = 2
+            end)
+        else
+            self:mech2()
+        end
     elseif self.boss.phase == 3 then -- BOMB TOSS
-        self:mech3()
+        if self.mechdelaycount == 2 then
+            Timer.after(2, function() 
+                self:mech3()
+                self.mechdelaycount = 3
+            end)
+        else
+            self:mech3()
+        end
     elseif self.boss.phase == 4 then -- DUSTSTORM
-        self:mech4()
+        if self.mechdelaycount == 3 then
+            Timer.after(2, function() 
+                self:mech4()
+                self.mechdelaycount = 4
+            end)
+        else
+            self:mech4()
+        end
     elseif self.boss.phase == 5 then -- TENNIS BALLS & BOMB TOSS
-        self:mech1()
-        self:mech3()
+        if self.mechdelaycount == 4 then
+            Timer.after(2, function() 
+                self:mech1()
+                self:mech3()
+                self.mechdelaycount = 5
+            end)
+        else
+            self:mech1()
+            self:mech3()
+        end
     elseif self.boss.phase == 6 then -- TENNIS BALLS & DUSTSTORM
-        self:mech1()
-        self:mech4()
+        if self.mechdelaycount == 5 then
+            Timer.after(2, function() 
+                self:mech1()
+                self:mech4()
+                self.mechdelaycount = 6
+            end)
+        else
+            self:mech1()
+            self:mech4()
+        end
     elseif self.boss.phase == 7 then -- BOMB TOSS & DUSTSTORM
-        self:mech3()
-        self:mech4()
+        if self.mechdelaycount == 6 then
+            Timer.after(2, function() 
+                self:mech3()
+                self:mech4()
+                self.mechdelaycount = 7
+            end)
+        else
+            self:mech3()
+            self:mech4()
+        end
     end
 end
 

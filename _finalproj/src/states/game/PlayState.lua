@@ -24,7 +24,10 @@ function PlayState:init()
         offsetY = 5
     }
 
-    self.stage = Stage1 { player = self.player } --Stage1{player=self.player} or Sandbox{player = self.player}
+      --Set the stage level here
+     --self.stage = Stage1{player=self.player}
+     --self.stage = Sandbox{player = self.player}
+    self.stage = Stage1 { player = self.player }
 
 
     self.player.stateMachine = StateMachine {
